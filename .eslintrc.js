@@ -7,7 +7,7 @@ module.exports = {
     'jest/globals': true,
   },
   extends: [
-    'airbnb',
+    'airbnb-base',
     'eslint:recommended',
     'plugin:prettier/recommended',
     'plugin:jest/recommended',
@@ -22,10 +22,6 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'react/jsx-filename-extension': [
-      2,
-      { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-    ],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'import/extensions': [
@@ -33,9 +29,7 @@ module.exports = {
       'ignorePackages',
       {
         js: 'never',
-        jsx: 'never',
         ts: 'never',
-        tsx: 'never',
       },
     ],
   },
@@ -43,11 +37,11 @@ module.exports = {
     jest: {
       version: 26,
     },
-    'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
+    'import/parsers': { '@typescript-eslint/parser': ['.ts'] },
     'import/resolver': {
       typescript: './tsconfig.json',
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.ts'],
         moduleDirectory: ['node_modules', 'src/'],
       },
     },
