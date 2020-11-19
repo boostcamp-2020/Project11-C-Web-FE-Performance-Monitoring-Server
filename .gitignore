@@ -105,3 +105,4 @@ dist
 
 #custom
 docker/data/
+config
