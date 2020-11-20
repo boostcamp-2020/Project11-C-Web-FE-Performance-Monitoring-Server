@@ -38,11 +38,11 @@
 ```mermaid
 graph LR
 
-D[user] --SDK install--> A
-
 A(App) -- error log --> B(server)
 B --data--> C(admin)
 C --data--> B
+D[user] --SDK install--> A
+
 style D fill:salmon
 style A fill:lightyellow
 style B fill:#BCA9F5
