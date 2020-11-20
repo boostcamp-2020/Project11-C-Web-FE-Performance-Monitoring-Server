@@ -32,3 +32,18 @@
 [![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=green)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+
+### 흐름
+
+```mermaid
+graph LR
+
+D[user] --SDK install--> A
+
+A(App) -- error log --> B(server)
+B --data--> C(admin)
+C --data--> B
+style D fill:salmon
+style A fill:lightyellow
+style B fill:#BCA9F5
+style C fill:lightblue
