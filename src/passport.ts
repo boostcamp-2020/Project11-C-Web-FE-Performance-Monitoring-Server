@@ -10,7 +10,7 @@ const initPassport = () => {
       {
         clientID: Config.GOOGLE_CLIENT_ID,
         clientSecret: Config.GOOGLE_CLIENT_SECRET,
-        callbackURL: Config.CAllBACK_URL,
+        callbackURL: Config.GOOGLE_CAllBACK_URL,
       },
       async (accessToken, refreshToken, profile: any, done) => {
         process.nextTick(() => {

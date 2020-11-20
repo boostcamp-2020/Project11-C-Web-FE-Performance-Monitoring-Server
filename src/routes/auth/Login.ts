@@ -5,12 +5,12 @@ import LoginController from '../../controllers/LoginController';
 const router: express.Router = express();
 
 router.get(
-  '/oauth',
+  '/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
+router.get('/github', passport.authenticate('github'));
 
-router.get('/oauth/github', passport.authenticate('github'));
-router.get('/oauth/callback', LoginController.GoogleLogin);
-router.get('/oauth/github/callback', LoginController.GithubLogin);
+router.get('/google/callback', LoginController.googleLogin);
+router.get('/github/callback', LoginController.githubLogin);
 
 export default router;

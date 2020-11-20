@@ -1,21 +1,24 @@
 import * as express from 'express';
 import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
 import Config from '../config/oauth-config';
 
-const GoogleLogin = async (req: express.Request, res: express.Response) => {
+dotenv.config({ path: '.env' });
+
+const googleLogin = async (req: express.Request, res: express.Response) => {
   passport.authenticate(
     'google',
-    { failureRedirect: '/' },
+    { failureRedirect: process.env.ADMIN_ADDR_LOGIN },
     (err: Error, user: any) => {
       if (err) return false;
 
-      const email: string = user.emails[0].value;
-      const token = jwt.sign({ userEmail: email }, Config.JWT_SECRET);
+      const [email] = user.emails;
+      const token = jwt.sign({ userEmail: email.value }, Config.JWT_SECRET);
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
-        return res.redirect('http://localhost:8000/main');
+        return res.redirect(process.env.ADMIN_ADDR_MAIN);
       }
 
       throw new Error('not found token');
@@ -23,19 +26,19 @@ const GoogleLogin = async (req: express.Request, res: express.Response) => {
   )(req, res);
 };
 
-const GithubLogin = async (req: express.Request, res: express.Response) => {
+const githubLogin = async (req: express.Request, res: express.Response) => {
   passport.authenticate(
     'github',
-    { failureRedirect: '/' },
+    { failureRedirect: process.env.ADMIN_ADDR_LOGIN },
     (err: Error, user: any) => {
       if (err) return false;
 
-      const email: string = user.emails[0].value;
-      const token = jwt.sign({ userEmail: email }, Config.JWT_SECRET);
+      const [email] = user.emails;
+      const token = jwt.sign({ userEmail: email.value }, Config.JWT_SECRET);
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
-        return res.redirect('http://localhost:8000/main');
+        return res.redirect(process.env.ADMIN_ADDR_MAIN);
       }
 
       throw new Error('not found token');
@@ -43,4 +46,4 @@ const GithubLogin = async (req: express.Request, res: express.Response) => {
   )(req, res);
 };
 
-export default { GoogleLogin, GithubLogin };
+export default { googleLogin, githubLogin };

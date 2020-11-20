@@ -3,7 +3,7 @@ import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
 import Config from '../config/oauth-config';
 
-const OAuthLogin = (buttonName: string, res: express.Response) => {
+const oAuthLogin = (buttonName: string, res: express.Response) => {
   passport.authenticate(
     buttonName,
     { failureRedirect: '/' },
@@ -23,4 +23,4 @@ const OAuthLogin = (buttonName: string, res: express.Response) => {
   )(res);
 };
 
-export default { OAuthLogin };
+export default { oAuthLogin };
