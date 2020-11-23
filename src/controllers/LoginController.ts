@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
-import Config from '../config/oauth-config';
 
 dotenv.config({ path: '.env' });
 
@@ -14,7 +13,10 @@ const googleLogin = async (req: express.Request, res: express.Response) => {
       if (err) return false;
 
       const [email] = user.emails;
-      const token = jwt.sign({ userEmail: email.value }, Config.JWT_SECRET);
+      const token = jwt.sign(
+        { userEmail: email.value },
+        process.env.JWT_SECRET
+      );
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
@@ -34,7 +36,10 @@ const githubLogin = async (req: express.Request, res: express.Response) => {
       if (err) return false;
 
       const [email] = user.emails;
-      const token = jwt.sign({ userEmail: email.value }, Config.JWT_SECRET);
+      const token = jwt.sign(
+        { userEmail: email.value },
+        process.env.JWT_SECRET
+      );
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
@@ -46,4 +51,27 @@ const githubLogin = async (req: express.Request, res: express.Response) => {
   )(req, res);
 };
 
-export default { googleLogin, githubLogin };
+const naverLogin = async (req: express.Request, res: express.Response) => {
+  passport.authenticate(
+    'naver',
+    { failureRedirect: process.env.ADMIN_ADDR_LOGIN },
+    (err: Error, user: any) => {
+      if (err) return false;
+
+      const [email] = user.emails;
+      const token = jwt.sign(
+        { userEmail: email.value },
+        process.env.JWT_SECRET
+      );
+
+      if (token) {
+        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
+        return res.redirect(process.env.ADMIN_ADDR_MAIN);
+      }
+
+      throw new Error('not found token');
+    }
+  )(req, res);
+};
+
+export default { googleLogin, githubLogin, naverLogin };

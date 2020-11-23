@@ -1,26 +1,9 @@
-import * as express from 'express';
-import * as passport from 'passport';
-import * as jwt from 'jsonwebtoken';
-import Config from '../config/oauth-config';
+// 모델을 가져와야 함 ex. import userModel from '@models/userModel';
 
-const oAuthLogin = (buttonName: string, res: express.Response) => {
-  passport.authenticate(
-    buttonName,
-    { failureRedirect: '/' },
-    (err: Error, user: any) => {
-      if (err) return false;
-
-      const email: string = user.emails[0].value;
-      const token = jwt.sign({ userEmail: email }, Config.JWT_SECRET);
-
-      if (token) {
-        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
-        res.redirect('http://localhost:8000/main');
-      }
-
-      throw new Error('not found token');
-    }
-  )(res);
+const saveData = (user: any) => {
+  /*
+  데이터베이스에 유저가 있는지 검사하고, 없으면 저장하는 로직을 추가해야 함
+  */
 };
 
-export default { oAuthLogin };
+export default { saveData };
