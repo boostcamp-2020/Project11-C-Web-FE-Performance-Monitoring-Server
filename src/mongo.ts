@@ -10,6 +10,7 @@ const getConnection = async () => {
     const option: mongoose.ConnectionOptions = {
       useNewUrlParser: true,
       useCreateIndex: true,
+      useFindAndModify: true,
       user: MONGO_USER,
       pass: MONGO_PW,
     };

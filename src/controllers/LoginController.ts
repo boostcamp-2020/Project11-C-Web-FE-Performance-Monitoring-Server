@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import loginService from '../services/LoginService';
 
 dotenv.config({ path: '.env' });
 
@@ -17,6 +18,7 @@ const googleLogin = async (req: express.Request, res: express.Response) => {
         { userEmail: email.value },
         process.env.JWT_SECRET
       );
+      loginService.saveData(user, 'google');
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
@@ -35,11 +37,12 @@ const githubLogin = async (req: express.Request, res: express.Response) => {
     (err: Error, user: any) => {
       if (err) return false;
 
-      const [email] = user.emails;
+      const [email] = user.emails || [{ value: null }];
       const token = jwt.sign(
         { userEmail: email.value },
         process.env.JWT_SECRET
       );
+      loginService.saveData(user, 'github');
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
@@ -63,6 +66,7 @@ const naverLogin = async (req: express.Request, res: express.Response) => {
         { userEmail: email.value },
         process.env.JWT_SECRET
       );
+      loginService.saveData(user, 'naver');
 
       if (token) {
         res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
