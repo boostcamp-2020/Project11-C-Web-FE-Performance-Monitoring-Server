@@ -1,9 +1,25 @@
-// 모델을 가져와야 함 ex. import userModel from '@models/userModel';
+import User from '../models/User';
 
-const saveData = (user: any) => {
-  /*
-  데이터베이스에 유저가 있는지 검사하고, 없으면 저장하는 로직을 추가해야 함
-  */
+const loginService = {
+  saveData: async (user: any, domain: string) => {
+    const { id, displayName, username, emails, photos } = user;
+    const [email] = emails || [{ value: null }];
+    const [photo] = photos;
+    const oauthId = `${id}_${domain}`;
+
+    const conditions = { oauthId };
+    const docs = Object({
+      name: displayName || username,
+      email: email.value,
+      imageURL: photo.value,
+      oauthId,
+      status: true,
+    });
+
+    const one = await User.findOne(conditions);
+    const userData = one || (await User.create(docs));
+    return userData;
+  },
 };
 
-export default { saveData };
+export default loginService;
