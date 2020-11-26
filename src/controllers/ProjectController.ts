@@ -9,5 +9,13 @@ const postProject = async (req: express.Request, res: express.Response) => {
     res.json(e);
   }
 };
+const deleteProject = async (req: express.Request, res: express.Response) => {
+  try {
+    const result = await ProjectService.removeProject(req.params.projectId);
+    res.json(result);
+  } catch (e) {
+    res.json(e);
+  }
+};
 
-export default { postProject };
+export default { postProject, deleteProject };

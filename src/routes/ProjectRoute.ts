@@ -4,6 +4,6 @@ import ProjectController from '../controllers/ProjectController';
 const router: express.Router = express();
 
 router.post('/', ProjectController.postProject);
-// router.delete('/:projectId', ProjectController);
+router.delete('/:projectId', ProjectController.deleteProject);
 
 export default router;
