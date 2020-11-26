@@ -10,6 +10,15 @@ const postProject = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const getProject = async (req: express.Request, res: express.Response) => {
+  try {
+    const result = await ProjectService.readProject(req.params.projectId);
+    res.json(result);
+  } catch (e) {
+    res.json(e);
+  }
+};
+
 const deleteProject = async (req: express.Request, res: express.Response) => {
   try {
     const result = await ProjectService.removeProject(req.params.projectId);
@@ -19,4 +28,4 @@ const deleteProject = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export default { postProject, deleteProject };
+export default { postProject, getProject, deleteProject };
