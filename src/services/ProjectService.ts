@@ -1,19 +1,31 @@
 import Project from '../models/Project';
+import User from '../models/User';
 
-// 유저 정보는 JWT에서 가져올것
-// 유저 정보에도 프로젝트 정보를 추가할 것
-const createProject = async (data: any) => {
+const createProject = async (user: any, data: any) => {
+  const { userId } = user;
   const { title, description, framework, dsn } = data;
-
   const docs = Object({
     title,
     description,
     framework,
     dsn,
+    owner: userId,
   });
 
-  const result = await Project.create(docs);
-  return result;
+  try {
+    const project = await Project.create(docs);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { projects: project._id },
+        $set: { recentProject: project._id },
+      },
+      { new: true }
+    );
+    return project;
+  } catch (err) {
+    return err;
+  }
 };
 
 // members에 요청을 보낸 유저가 존재할 경우 결과를 반환할 것
