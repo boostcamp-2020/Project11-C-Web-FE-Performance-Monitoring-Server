@@ -11,11 +11,13 @@ const LogSchema: mongoose.Schema = new Schema({
     type: Date,
     default: Date.now,
   },
+  errArea: {}, //mongoose.Schema.Types.Mixed,
 });
 
 export interface LogDocument extends mongoose.Document {
   content: string;
   date: Date;
+  errArea: {};
 }
 
 const Log: mongoose.Model<LogDocument> = mongoose.model(
