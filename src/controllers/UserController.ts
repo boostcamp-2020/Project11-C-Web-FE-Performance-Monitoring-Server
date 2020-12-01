@@ -1,12 +1,21 @@
 import * as express from 'express';
+import UserService from '../services/UserService';
 
 const getUser = async (req: express.Request, res: express.Response) => {
   try {
-    const { user } = req;
-    res.json(user);
-  } catch (e) {
-    res.json(e);
+    res.json(req.user);
+  } catch (err) {
+    res.json(err);
   }
 };
 
-export default { getUser };
+const getProjects = async (req: express.Request, res: express.Response) => {
+  try {
+    const result = await UserService.readProjects(req.user);
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+export default { getUser, getProjects };

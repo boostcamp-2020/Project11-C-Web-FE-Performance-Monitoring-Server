@@ -14,4 +14,13 @@ const findUser = async (id: string) => {
   return user;
 };
 
-export default { findUser };
+const readProjects = async (user: any) => {
+  const { projects } = await User.findOne({ _id: user.userId }).populate({
+    path: 'projects',
+    model: 'Project',
+    select: 'title',
+  });
+  return projects;
+};
+
+export default { findUser, readProjects };
