@@ -3,6 +3,7 @@ import User from '../models/User';
 const findUser = async (id: string) => {
   const one = await User.findById(id);
   const user = {
+    userId: id,
     name: one.name,
     email: one.email,
     imageURL: one.imageURL,
