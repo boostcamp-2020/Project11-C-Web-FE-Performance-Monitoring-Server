@@ -2,8 +2,9 @@ import * as passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github';
 import { Strategy as NaverStrategy } from 'passport-naver';
-import { Strategy as JwtStrategy } from 'passport-jwt';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import * as dotenv from 'dotenv';
+import UserService from './services/UserService';
 
 dotenv.config({ path: '.env' });
 
@@ -49,17 +50,20 @@ const initPassport = () => {
     )
   );
 
-  const cookieExtractor = req => {
-    return req.cookies ? req.cookies.jwt : undefined;
-  };
   passport.use(
     new JwtStrategy(
       {
-        jwtFromRequest: cookieExtractor,
+        jwtFromRequest: ExtractJwt.fromHeader('authorization'),
         secretOrKey: process.env.JWT_SECRET,
       },
       async (payload, done) => {
-        done(null, true);
+        try {
+          const user = await UserService.findUser(payload.userId);
+          if (!user || !user.status) return done(null, false);
+          return done(null, user);
+        } catch (err) {
+          return done(err);
+        }
       }
     )
   );
