@@ -47,4 +47,23 @@ const postMember = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export default { postProject, getProject, deleteProject, postMember };
+const deleteMember = async (req: express.Request, res: express.Response) => {
+  try {
+    const result = await ProjectService.removeMember(
+      req.user,
+      req.params.projectId,
+      req.params.memberId
+    );
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+export default {
+  postProject,
+  getProject,
+  deleteProject,
+  postMember,
+  deleteMember,
+};

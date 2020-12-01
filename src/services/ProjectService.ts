@@ -88,4 +88,32 @@ const pushMember = async (user: any, projectId: string, data: any) => {
   return updatedProject;
 };
 
-export default { createProject, readProject, removeProject, pushMember };
+const removeMember = async (user: any, projectId: string, memberId: string) => {
+  const { userId } = user;
+  const updatedProject = await Project.findOneAndUpdate(
+    {
+      _id: projectId,
+      owner: userId,
+    },
+    {
+      $pull: { members: Object(memberId) },
+    },
+    { new: true }
+  );
+  const updatedUser = await User.findByIdAndUpdate(
+    memberId,
+    {
+      $pull: { projects: updatedProject._id },
+    },
+    { new: true }
+  );
+  return updatedProject;
+};
+
+export default {
+  createProject,
+  readProject,
+  removeProject,
+  pushMember,
+  removeMember,
+};
