@@ -3,10 +3,10 @@ import ProjectService from '../services/ProjectService';
 
 const postProject = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.createProject(req.body);
+    const result = await ProjectService.createProject(req.user, req.body);
     res.json(result);
-  } catch (e) {
-    res.json(e);
+  } catch (err) {
+    res.json(err);
   }
 };
 
@@ -14,8 +14,8 @@ const getProject = async (req: express.Request, res: express.Response) => {
   try {
     const result = await ProjectService.readProject(req.params.projectId);
     res.json(result);
-  } catch (e) {
-    res.json(e);
+  } catch (err) {
+    res.json(err);
   }
 };
 
@@ -23,8 +23,8 @@ const deleteProject = async (req: express.Request, res: express.Response) => {
   try {
     const result = await ProjectService.removeProject(req.params.projectId);
     res.json(result);
-  } catch (e) {
-    res.json(e);
+  } catch (err) {
+    res.json(err);
   }
 };
 
