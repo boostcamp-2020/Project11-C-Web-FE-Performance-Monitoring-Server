@@ -24,7 +24,10 @@ const getProject = async (req: express.Request, res: express.Response) => {
 
 const deleteProject = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.removeProject(req.params.projectId);
+    const result = await ProjectService.removeProject(
+      req.user,
+      req.params.projectId
+    );
     res.json(result);
   } catch (err) {
     res.json(err);

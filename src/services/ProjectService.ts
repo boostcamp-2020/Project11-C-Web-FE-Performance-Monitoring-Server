@@ -36,9 +36,32 @@ const readProject = async (user: any, projectId: string) => {
   return 'no permission';
 };
 
-// 유저 정보에 있는 project 정보도 삭제할것
-const removeProject = async (projectId: string) => {
-  const deletedProject = await Project.findByIdAndDelete(projectId);
+const removeProject = async (user: any, projectId: string) => {
+  const deletedProject = await Project.findOneAndDelete({
+    _id: projectId,
+    owner: user.userId,
+  });
+  const { owner, members } = deletedProject;
+  const allMembers = [...members, owner];
+
+  const promiseMembers = allMembers.map(async memberId => {
+    const member = await User.findById(memberId);
+    const newRecentProject =
+      String(member.recentProject) === projectId ? null : member.recentProject;
+    const newProjects = member.projects.filter(
+      project => String(project) !== projectId
+    );
+    const updatedMember = await User.findByIdAndUpdate(
+      memberId,
+      {
+        $set: { recentProject: newRecentProject, projects: newProjects },
+      },
+      { new: true }
+    );
+    return updatedMember;
+  });
+  const updatedMembers = await Promise.all(promiseMembers);
+
   return deletedProject;
 };
 
