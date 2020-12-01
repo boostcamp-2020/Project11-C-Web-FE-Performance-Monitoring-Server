@@ -9,7 +9,11 @@ const router: express.Router = express();
 
 router.use('/oauth', loginRouter);
 router.use('/log', logRouter);
-router.use('/project', projectRouter);
+router.use(
+  '/project',
+  passport.authenticate('jwt', { session: false }),
+  projectRouter
+);
 router.use(
   '/user',
   passport.authenticate('jwt', { session: false }),
