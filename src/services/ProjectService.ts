@@ -48,13 +48,11 @@ const removeProject = async (user: any, projectId: string) => {
     const member = await User.findById(memberId);
     const newRecentProject =
       String(member.recentProject) === projectId ? null : member.recentProject;
-    const newProjects = member.projects.filter(
-      project => String(project) !== projectId
-    );
     const updatedMember = await User.findByIdAndUpdate(
       memberId,
       {
-        $set: { recentProject: newRecentProject, projects: newProjects },
+        $pull: { projects: Object(projectId) },
+        $set: { recentProject: newRecentProject },
       },
       { new: true }
     );
