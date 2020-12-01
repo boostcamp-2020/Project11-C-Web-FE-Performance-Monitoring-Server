@@ -12,7 +12,10 @@ const postProject = async (req: express.Request, res: express.Response) => {
 
 const getProject = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.readProject(req.params.projectId);
+    const result = await ProjectService.readProject(
+      req.user,
+      req.params.projectId
+    );
     res.json(result);
   } catch (err) {
     res.json(err);

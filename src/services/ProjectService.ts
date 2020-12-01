@@ -28,10 +28,12 @@ const createProject = async (user: any, data: any) => {
   }
 };
 
-// members에 요청을 보낸 유저가 존재할 경우 결과를 반환할 것
-const readProject = async (projectId: string) => {
+const readProject = async (user: any, projectId: string) => {
+  const { userId } = user;
   const project = await Project.findById(projectId);
-  return project;
+  if (String(project.owner) === userId || project.members.includes(userId))
+    return project;
+  return 'no permission';
 };
 
 // 유저 정보에 있는 project 정보도 삭제할것
