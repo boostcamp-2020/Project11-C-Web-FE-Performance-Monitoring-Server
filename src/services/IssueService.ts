@@ -14,14 +14,14 @@ export const createIssue = async (errorEvent: ErrorEventDocument) => {
     errorEvents: [errorEvent],
   });
 
-  const result = await newIssue.save();
+  const result: IssueDocument = await newIssue.save();
   return result;
 };
 
 export const appendErrorEventToIssue = async (
   errorEvent: ErrorEventDocument
 ) => {
-  const res = await Issue.findOneAndUpdate(
+  const res: IssueDocument = await Issue.findOneAndUpdate(
     { eventId: errorEvent.eventId },
     { $push: { errorEvents: errorEvent } }
   );
@@ -40,7 +40,6 @@ export const getAllIssue = async () => {
 
 export const hasIssue = async (eventId: String) => {
   const res: IssueDocument = await Issue.findOne({ eventId }).exec();
-  console.log('issue', !!res);
   return !!res;
 };
 

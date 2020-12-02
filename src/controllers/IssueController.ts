@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { IssueDocument } from '../models/Issue';
 
 import * as issueService from '../services/IssueService';
 
@@ -7,7 +8,7 @@ const listAllIssues = async (
   res: express.Response
   // next: express.NextFunction
 ) => {
-  const issueList = await issueService.getAllIssue();
+  const issueList: IssueDocument[] = await issueService.getAllIssue();
   res.json(issueList);
 };
 

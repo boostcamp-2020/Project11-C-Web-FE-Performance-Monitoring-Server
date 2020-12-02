@@ -3,7 +3,7 @@ import Log, { LogDocument } from '../models/log';
 
 const collectLog = async (req: express.Request, res: express.Response) => {
   const data = req.body;
-  const newLog = new Log(data);
+  const newLog: LogDocument = new Log(data);
   try {
     await newLog.save();
     res.json(newLog);
