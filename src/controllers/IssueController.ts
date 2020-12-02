@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import issueService from '../services/IssueService';
+import * as issueService from '../services/IssueService';
 
 const listAllIssues = async (
   req: express.Request,

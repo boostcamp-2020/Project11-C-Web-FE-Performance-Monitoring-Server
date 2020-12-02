@@ -1,16 +1,15 @@
 import * as express from 'express';
 import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
-import errorEventService from '../services/ErrorEventService';
-import issueService from '../services/IssueService';
+import * as errorEventService from '../services/ErrorEventService';
+import * as issueService from '../services/IssueService';
 
 const collectErrorEvent = async (
   req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  res: express.Response
   // next: express.NextFunction
 ) => {
   const data = req.body;
-
+  console.log(data);
   try {
     const result = await errorEventService.saveErrorEvent(data);
     const processResult = await issueService.addErrorEventToISsue(result);
