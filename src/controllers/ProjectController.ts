@@ -1,9 +1,13 @@
 import * as express from 'express';
+import { ProjectDocument } from '../models/Project';
 import ProjectService from '../services/ProjectService';
 
 const postProject = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.createProject(req.user, req.body);
+    const result: ProjectDocument = await ProjectService.createProject(
+      req.user,
+      req.body
+    );
     res.json(result);
   } catch (err) {
     res.json(err);
@@ -12,7 +16,7 @@ const postProject = async (req: express.Request, res: express.Response) => {
 
 const getProject = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.readProject(
+    const result: ProjectDocument | any = await ProjectService.readProject(
       req.user,
       req.params.projectId
     );
@@ -24,7 +28,7 @@ const getProject = async (req: express.Request, res: express.Response) => {
 
 const deleteProject = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.removeProject(
+    const result: ProjectDocument = await ProjectService.removeProject(
       req.user,
       req.params.projectId
     );
@@ -36,7 +40,7 @@ const deleteProject = async (req: express.Request, res: express.Response) => {
 
 const postMember = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.pushMember(
+    const result: ProjectDocument = await ProjectService.pushMember(
       req.user,
       req.params.projectId,
       req.body
@@ -49,7 +53,7 @@ const postMember = async (req: express.Request, res: express.Response) => {
 
 const deleteMember = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await ProjectService.removeMember(
+    const result: ProjectDocument = await ProjectService.removeMember(
       req.user,
       req.params.projectId,
       req.params.memberId

@@ -1,5 +1,5 @@
-import Project from '../models/Project';
-import User from '../models/User';
+import Project, { ProjectDocument } from '../models/Project';
+import User, { UserDocument } from '../models/User';
 
 const createProject = async (user: any, data: any) => {
   const { userId } = user;
@@ -13,8 +13,8 @@ const createProject = async (user: any, data: any) => {
   });
 
   try {
-    const project = await Project.create(docs);
-    const updatedUser = await User.findByIdAndUpdate(
+    const project: ProjectDocument = await Project.create(docs);
+    const updatedUser: UserDocument = await User.findByIdAndUpdate(
       userId,
       {
         $push: { projects: project._id },
@@ -30,14 +30,14 @@ const createProject = async (user: any, data: any) => {
 
 const readProject = async (user: any, projectId: string) => {
   const { userId } = user;
-  const project = await Project.findById(projectId);
+  const project: ProjectDocument = await Project.findById(projectId);
   if (String(project.owner) === userId || project.members.includes(userId))
     return project;
   return 'no permission';
 };
 
 const removeProject = async (user: any, projectId: string) => {
-  const deletedProject = await Project.findOneAndDelete({
+  const deletedProject: ProjectDocument = await Project.findOneAndDelete({
     _id: projectId,
     owner: user.userId,
   });
@@ -45,10 +45,10 @@ const removeProject = async (user: any, projectId: string) => {
   const allMembers = [...members, owner];
 
   const promiseMembers = allMembers.map(async memberId => {
-    const member = await User.findById(memberId);
+    const member: UserDocument = await User.findById(memberId);
     const newRecentProject =
       String(member.recentProject) === projectId ? null : member.recentProject;
-    const updatedMember = await User.findByIdAndUpdate(
+    const updatedMember: UserDocument = await User.findByIdAndUpdate(
       memberId,
       {
         $pull: { projects: Object(projectId) },
@@ -58,7 +58,7 @@ const removeProject = async (user: any, projectId: string) => {
     );
     return updatedMember;
   });
-  const updatedMembers = await Promise.all(promiseMembers);
+  const updatedMembers: UserDocument[] = await Promise.all(promiseMembers);
 
   return deletedProject;
 };
@@ -66,7 +66,7 @@ const removeProject = async (user: any, projectId: string) => {
 const pushMember = async (user: any, projectId: string, data: any) => {
   const { userId } = user;
   const { member } = data;
-  const updatedProject = await Project.findOneAndUpdate(
+  const updatedProject: ProjectDocument = await Project.findOneAndUpdate(
     {
       _id: projectId,
       owner: userId,
@@ -76,7 +76,7 @@ const pushMember = async (user: any, projectId: string, data: any) => {
     },
     { new: true }
   );
-  const updatedUser = await User.findByIdAndUpdate(
+  const updatedUser: UserDocument = await User.findByIdAndUpdate(
     member,
     {
       $addToSet: { projects: updatedProject._id },
@@ -88,7 +88,7 @@ const pushMember = async (user: any, projectId: string, data: any) => {
 
 const removeMember = async (user: any, projectId: string, memberId: string) => {
   const { userId } = user;
-  const updatedProject = await Project.findOneAndUpdate(
+  const updatedProject: ProjectDocument = await Project.findOneAndUpdate(
     {
       _id: projectId,
       owner: userId,
@@ -98,7 +98,7 @@ const removeMember = async (user: any, projectId: string, memberId: string) => {
     },
     { new: true }
   );
-  const updatedUser = await User.findByIdAndUpdate(
+  const updatedUser: UserDocument = await User.findByIdAndUpdate(
     memberId,
     {
       $pull: { projects: updatedProject._id },

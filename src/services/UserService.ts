@@ -1,7 +1,7 @@
-import User from '../models/User';
+import User, { UserDocument } from '../models/User';
 
 const findUser = async (id: string) => {
-  const one = await User.findById(id);
+  const one: UserDocument = await User.findById(id);
   const user = {
     userId: id,
     name: one.name,

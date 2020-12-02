@@ -11,7 +11,7 @@ const getUser = async (req: express.Request, res: express.Response) => {
 
 const getProjects = async (req: express.Request, res: express.Response) => {
   try {
-    const result = await UserService.readProjects(req.user);
+    const result: {} = await UserService.readProjects(req.user);
     res.json(result);
   } catch (err) {
     res.json(err);

@@ -15,7 +15,7 @@ const googleLogin = (req: express.Request, res: express.Response) => {
       if (err) return false;
 
       const [userId, userStatus] = await LoginService.saveData(user, 'google');
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+      const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
 
       if (!userStatus) throw new Error('deleted user');
 
@@ -40,7 +40,7 @@ const githubLogin = (req: express.Request, res: express.Response) => {
       if (err) return false;
 
       const [userId, userStatus] = await LoginService.saveData(user, 'github');
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+      const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
 
       if (!userStatus) throw new Error('deleted user');
 
