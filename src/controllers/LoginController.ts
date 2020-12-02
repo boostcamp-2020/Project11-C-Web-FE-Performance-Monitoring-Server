@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
-import * as url from 'url';
 import * as dotenv from 'dotenv';
 import LoginService from '../services/LoginService';
 
@@ -19,13 +18,10 @@ const googleLogin = (req: express.Request, res: express.Response) => {
 
       if (!userStatus) throw new Error('deleted user');
 
-      if (token)
-        return res.redirect(
-          url.format({
-            pathname: process.env.ADMIN_ADDR_MAIN,
-            query: { token },
-          })
-        );
+      if (token) {
+        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
+        return res.redirect(process.env.ADMIN_ADDR_MAIN);
+      }
 
       throw new Error('not found token');
     }
@@ -44,13 +40,10 @@ const githubLogin = (req: express.Request, res: express.Response) => {
 
       if (!userStatus) throw new Error('deleted user');
 
-      if (token)
-        return res.redirect(
-          url.format({
-            pathname: process.env.ADMIN_ADDR_MAIN,
-            query: { token },
-          })
-        );
+      if (token) {
+        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
+        return res.redirect(process.env.ADMIN_ADDR_MAIN);
+      }
 
       throw new Error('not found token');
     }
