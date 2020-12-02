@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User, { UserDocument } from '../models/User';
 
 const saveData = async (user: any, domain: string) => {
   const { id, displayName, username, emails, photos } = user;
@@ -15,10 +15,10 @@ const saveData = async (user: any, domain: string) => {
     status: true,
   });
 
-  const one = await User.findOne(conditions);
-  const temp = one || (await User.create(docs));
-  const userId = temp._id;
-  const userStatus = temp.status;
+  const one: UserDocument = await User.findOne(conditions);
+  const temp: UserDocument = one || (await User.create(docs));
+  const userId: any = temp._id;
+  const userStatus: Boolean = temp.status;
   return [userId, userStatus];
 };
 

@@ -2,7 +2,7 @@ import * as passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github';
 import { Strategy as NaverStrategy } from 'passport-naver';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as JwtStrategy } from 'passport-jwt';
 import * as dotenv from 'dotenv';
 import UserService from './services/UserService';
 
@@ -50,10 +50,14 @@ const initPassport = () => {
     )
   );
 
+  const cookieExtractor = req => {
+    return req.cookies ? req.cookies.jwt : undefined;
+  };
+
   passport.use(
     new JwtStrategy(
       {
-        jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+        jwtFromRequest: cookieExtractor,
         secretOrKey: process.env.JWT_SECRET,
       },
       async (payload, done) => {

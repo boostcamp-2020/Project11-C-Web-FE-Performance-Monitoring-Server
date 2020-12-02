@@ -1,8 +1,9 @@
-import User from '../models/User';
+import User, { UserDocument } from '../models/User';
 
 const findUser = async (id: string) => {
-  const one = await User.findById(id);
+  const one: UserDocument = await User.findById(id);
   const user = {
+    userId: id,
     name: one.name,
     email: one.email,
     imageURL: one.imageURL,
@@ -13,4 +14,13 @@ const findUser = async (id: string) => {
   return user;
 };
 
-export default { findUser };
+const readProjects = async (user: any) => {
+  const { projects } = await User.findOne({ _id: user.userId }).populate({
+    path: 'projects',
+    model: 'Project',
+    select: 'title',
+  });
+  return projects;
+};
+
+export default { findUser, readProjects };
