@@ -13,6 +13,13 @@ router.use('/log', logRouter);
 router.use('/errorevent', errorEventRouter);
 router.use('/issue', issueRouter);
 router.use('/project', projectRouter);
+
+router.use(
+  '/project',
+  passport.authenticate('jwt', { session: false }),
+  projectRouter
+);
+
 router.use(
   '/user',
   passport.authenticate('jwt', { session: false }),
