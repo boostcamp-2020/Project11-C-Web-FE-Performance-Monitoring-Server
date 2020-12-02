@@ -2,25 +2,26 @@ import * as express from 'express';
 import Log, { LogDocument } from '../models/log';
 
 const collectLog = async (req: express.Request, res: express.Response) => {
-  const { content, date } = req.body;
-  console.log(content, date);
-  const newLog = new Log({ content, date: new Date(date).toISOString() });
+  const data = req.body;
+  const newLog: LogDocument = new Log(data);
   try {
     await newLog.save();
     res.json(newLog);
-  } catch (e) {
-    console.error(e);
-    res.json(e);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
   }
 };
 
 const getLogs = async (req: express.Request, res: express.Response) => {
   try {
-    const logList: LogDocument[] = await Log.find().exec();
+    const logList: LogDocument[] = await Log.find()
+      .sort({ date: 'asc' })
+      .exec();
     res.json(logList);
-  } catch (e) {
-    console.error(e);
-    res.json(e);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
   }
 };
 
