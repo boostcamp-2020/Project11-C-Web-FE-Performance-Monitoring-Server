@@ -29,10 +29,12 @@ router.use(
 router.get('/', (req: express.Request, res: express.Response) => {
   res.send('hello typescript express!');
 });
+
+// 에러 고의적으로 일으키는 /test url ,?q=message 로 에러 메세지 설정 가능
 router.get(
   '/test',
-  (req: any, res: express.Response, next: express.NextFunction) => {
-    throw new Error('testets');
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    throw new Error(req.query.q as string);
   }
 );
 export default router;
