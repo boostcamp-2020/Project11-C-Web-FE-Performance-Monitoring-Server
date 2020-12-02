@@ -8,6 +8,7 @@ export const ErrorEventSchema: mongoose.Schema = new mongoose.Schema({
     default: Date.now,
   },
   userInfo: {},
+  tags: [[String, String]],
   eventId: String,
 });
 
@@ -17,6 +18,7 @@ export interface ErrorEventDocument extends mongoose.Document {
   errArea: mongoose.Schema.Types.Mixed;
   eventId: String;
   userInfo: {};
+  tags: [[String, String]];
 }
 
 const ErrorEvent: mongoose.Model<ErrorEventDocument> = mongoose.model(
