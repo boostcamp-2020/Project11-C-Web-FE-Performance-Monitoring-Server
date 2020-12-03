@@ -6,13 +6,22 @@ import errorEventRouter from './Error';
 import issueRouter from './Issue';
 import projectRouter from './ProjectRoute';
 import userRouter from './UserRoute';
+import commentRouter from './Comment';
 
 const router: express.Router = express();
 router.use('/oauth', loginRouter);
 router.use('/log', logRouter);
 router.use('/errorevent', errorEventRouter);
-router.use('/issue', issueRouter);
-router.use('/project', projectRouter);
+router.use(
+  '/issue',
+  passport.authenticate('jwt', { session: false }),
+  issueRouter
+);
+router.use(
+  '/comment',
+  passport.authenticate('jwt', { session: false }),
+  commentRouter
+);
 
 router.use(
   '/project',
