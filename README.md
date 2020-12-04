@@ -1,5 +1,7 @@
 # Project11-C-Web-FE-Performance-Monitoring-Server
 
+# Team Acent
+
 ## 팀원
 
 - J019 [권오민](https://github.com/ohmink)
@@ -10,6 +12,14 @@
 ## 프로젝트 소개
 
 > Sentry Like and Simple Project
+
+## Repository
+
+- 서버 [Server](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
+
+- 관리자용 Front Page [Admin](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin)
+
+- SDK [SDK](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK)
 
 ### 개발 환경
 
@@ -28,10 +38,27 @@
 
 ### 작업 진행 상황
 
+> Server
+
 [![GitHub Open Issues](https://img.shields.io/github/issues-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=green)](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
 [![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=green)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 
+> Admin
+
+[![GitHub Open Issues](https://img.shields.io/github/issues-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=green)](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
+[![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+[![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=green)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+[![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+
+> SDK
+
+[![GitHub Open Issues](https://img.shields.io/github/issues-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=green)](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
+[![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+[![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=green)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+[![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
+
 ### 흐름
+
 ![mermaid](https://user-images.githubusercontent.com/45379812/99759657-3a396380-2b36-11eb-86eb-506e048eb7da.png)
