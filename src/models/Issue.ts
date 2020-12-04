@@ -1,9 +1,14 @@
 import * as mongoose from 'mongoose';
 import { ErrorEventSchema, ErrorEventDocument } from './ErrorEvent';
+import { CommentSchema, CommentDocument } from './Comment';
 
 const IssueSchema: mongoose.Schema = new mongoose.Schema(
   {
-    eventId: {
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+    },
+    groupHash: {
       type: String,
     },
     title: {
@@ -14,9 +19,10 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
     description: {
       type: String,
     },
+
     errorEvents: [ErrorEventSchema],
 
-    comments: [],
+    comments: [CommentSchema],
   },
   {
     timestamps: true,
@@ -24,10 +30,10 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
 );
 
 export interface IssueDocument extends mongoose.Document {
-  eventId: String;
+  groupHash: String;
   title: String;
   description: String;
-  comments: String[];
+  comments: CommentDocument[];
   errorEvents: ErrorEventDocument[];
 }
 

@@ -7,7 +7,7 @@ export const createIssue = async (errorEvent: ErrorEventDocument) => {
   const msg = errorEvent.content.split('\n')[1];
 
   const newIssue = new Issue({
-    eventId: errorEvent.eventId,
+    groupHash: errorEvent.hash,
     title,
     description: msg,
     comments: [],
@@ -22,14 +22,14 @@ export const appendErrorEventToIssue = async (
   errorEvent: ErrorEventDocument
 ) => {
   const res: IssueDocument = await Issue.findOneAndUpdate(
-    { eventId: errorEvent.eventId },
+    { groupHash: errorEvent.hash },
     { $push: { errorEvents: errorEvent } }
   );
   return res;
 };
 
-export const getIssue = async (eventId: String) => {
-  const res: IssueDocument = await Issue.findOne({ eventId }).exec();
+export const getIssue = async (groupHash: String) => {
+  const res: IssueDocument = await Issue.findOne({ groupHash }).exec();
   return res;
 };
 
@@ -38,13 +38,13 @@ export const getAllIssue = async () => {
   return res;
 };
 
-export const hasIssue = async (eventId: String) => {
-  const res: IssueDocument = await Issue.findOne({ eventId }).exec();
+export const hasIssue = async (groupHash: String) => {
+  const res: IssueDocument = await Issue.findOne({ groupHash }).exec();
   return !!res;
 };
 
 export const addErrorEventToISsue = async (errorEvent: ErrorEventDocument) => {
-  if (!(await hasIssue(errorEvent.eventId))) {
+  if (!(await hasIssue(errorEvent.hash))) {
     return createIssue(errorEvent);
   }
   return appendErrorEventToIssue(errorEvent);

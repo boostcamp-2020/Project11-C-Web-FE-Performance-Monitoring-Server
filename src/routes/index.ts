@@ -11,8 +11,11 @@ const router: express.Router = express();
 router.use('/oauth', loginRouter);
 router.use('/log', logRouter);
 router.use('/errorevent', errorEventRouter);
-router.use('/issue', issueRouter);
-router.use('/project', projectRouter);
+router.use(
+  '/issue',
+  passport.authenticate('jwt', { session: false }),
+  issueRouter
+);
 
 router.use(
   '/project',
