@@ -35,6 +35,7 @@ export interface IssueDocument extends mongoose.Document {
   description: String;
   comments: CommentDocument[];
   errorEvents: ErrorEventDocument[];
+  projectId: mongoose.Types.ObjectId;
 }
 
 const Issue: mongoose.Model<IssueDocument> = mongoose.model(

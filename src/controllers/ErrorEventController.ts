@@ -9,7 +9,9 @@ const collectErrorEvent = async (
   res: express.Response
   // next: express.NextFunction
 ) => {
-  const data = req.body;
+  const { projectId } = req.params;
+
+  const data = { ...req.body, projectId };
   console.log(data);
 
   try {
