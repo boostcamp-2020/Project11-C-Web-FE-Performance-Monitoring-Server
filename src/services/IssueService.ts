@@ -1,20 +1,29 @@
+import * as mongoose from 'mongoose';
 import Issue, { IssueDocument } from '../models/Issue';
-import { ErrorEventDocument } from '../models/ErrorEvent';
+import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
 
 // 기존 issue가 없을 경우 새로 만들어낸다
 export const createIssue = async (errorEvent: ErrorEventDocument) => {
-  const title = errorEvent.content.split('\n')[0];
-  const msg = errorEvent.content.split('\n')[1];
+  const { name } = errorEvent;
+  const { message } = errorEvent;
+  const { stack } = errorEvent;
 
   const newIssue = new Issue({
+    projectId: errorEvent.projectId,
     groupHash: errorEvent.hash,
-    title,
-    description: msg,
+    name,
+    message,
+    stack,
     comments: [],
     errorEvents: [errorEvent],
   });
 
   const result: IssueDocument = await newIssue.save();
+
+  errorEvent.issueId = result._id;
+
+  await errorEvent.save();
+
   return result;
 };
 
@@ -23,13 +32,17 @@ export const appendErrorEventToIssue = async (
 ) => {
   const res: IssueDocument = await Issue.findOneAndUpdate(
     { groupHash: errorEvent.hash },
-    { $push: { errorEvents: errorEvent } }
+    // eslint-disable-next-line no-underscore-dangle
+    { $push: { errorEvents: errorEvent._id } }
   );
+
+  errorEvent.issueId = res._id;
+  await errorEvent.save();
   return res;
 };
 
-export const getIssue = async (groupHash: String) => {
-  const res: IssueDocument = await Issue.findOne({ groupHash }).exec();
+export const getIssue = async (issueId: String) => {
+  const res: IssueDocument = await Issue.findById(issueId).exec();
   return res;
 };
 
@@ -48,4 +61,11 @@ export const addErrorEventToISsue = async (errorEvent: ErrorEventDocument) => {
     return createIssue(errorEvent);
   }
   return appendErrorEventToIssue(errorEvent);
+};
+
+export const getIssueListByProjectId = async (
+  projectId: mongoose.Types.ObjectId
+) => {
+  const res: IssueDocument[] = await Issue.find({ projectId }).exec();
+  return res;
 };

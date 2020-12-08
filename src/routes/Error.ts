@@ -3,6 +3,8 @@ import ErrorController from '../controllers/ErrorEventController';
 
 const router: express.Router = express();
 
-router.post('/', ErrorController.collectErrorEvent);
+router.post('/:projectId', ErrorController.collectErrorEvent);
 router.get('/', ErrorController.getAllErrorEvents);
+router.get('/:errorEventId', ErrorController.getErrorEvent);
+router.get('/issue/:issueId', ErrorController.listIssueErrorEvents);
 export default router;

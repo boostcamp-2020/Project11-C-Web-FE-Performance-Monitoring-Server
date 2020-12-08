@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import Project, { ProjectDocument } from '../models/Project';
 import User, { UserDocument } from '../models/User';
 
@@ -14,6 +15,10 @@ const createProject = async (user: any, data: any) => {
 
   try {
     const project: ProjectDocument = await Project.create(docs);
+
+    project.dsn += `/${project._id}`;
+    await project.save();
+
     const updatedUser: UserDocument = await User.findByIdAndUpdate(
       userId,
       {

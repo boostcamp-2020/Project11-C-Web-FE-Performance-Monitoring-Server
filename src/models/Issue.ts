@@ -4,6 +4,17 @@ import { CommentSchema, CommentDocument } from './Comment';
 
 const IssueSchema: mongoose.Schema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    message: {
+      type: String,
+    },
+    stack: {
+      type: String,
+    },
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Project',
@@ -11,17 +22,12 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
     groupHash: {
       type: String,
     },
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-    },
-
-    errorEvents: [ErrorEventSchema],
-
+    errorEvents: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ErrorEvent',
+      },
+    ],
     comments: [CommentSchema],
   },
   {
@@ -30,11 +36,13 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
 );
 
 export interface IssueDocument extends mongoose.Document {
+  name: String;
+  message: String;
+  stack: String;
   groupHash: String;
-  title: String;
-  description: String;
   comments: CommentDocument[];
-  errorEvents: ErrorEventDocument[];
+  errorEvents: mongoose.Types.ObjectId[];
+  projectId: mongoose.Types.ObjectId;
 }
 
 const Issue: mongoose.Model<IssueDocument> = mongoose.model(

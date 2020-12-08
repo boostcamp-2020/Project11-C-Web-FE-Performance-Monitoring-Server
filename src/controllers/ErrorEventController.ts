@@ -1,6 +1,6 @@
 import * as express from 'express';
-import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
-import { IssueDocument } from '../models/Issue';
+import * as mongoose from 'mongoose';
+import { ErrorEventDocument } from '../models/ErrorEvent';
 import * as errorEventService from '../services/ErrorEventService';
 import * as issueService from '../services/IssueService';
 
@@ -9,22 +9,18 @@ const collectErrorEvent = async (
   res: express.Response
   // next: express.NextFunction
 ) => {
-  const data = req.body;
-  console.log(data);
-
+  const { projectId } = req.params;
+  const data = { ...req.body, projectId };
   try {
-    const result: ErrorEventDocument = await errorEventService.saveErrorEvent(
+    const newErrorEvent: ErrorEventDocument = await errorEventService.saveErrorEvent(
       data
     );
-    const processResult: IssueDocument = await issueService.addErrorEventToISsue(
-      result
-    );
-    res.json(processResult);
-    console.log(processResult);
+    await issueService.addErrorEventToISsue(newErrorEvent);
+    res.json({ result: true });
   } catch (err) {
+    console.error(err);
     res.json(err);
   }
-  // next();
 };
 
 const getAllErrorEvents = async (
@@ -32,7 +28,7 @@ const getAllErrorEvents = async (
   res: express.Response
 ) => {
   try {
-    const ErrorEventList: ErrorEventDocument[] = await ErrorEvent.find().exec();
+    const ErrorEventList: ErrorEventDocument[] = await errorEventService.getAllErrorEvent();
     res.json(ErrorEventList);
   } catch (err) {
     console.error(err);
@@ -40,4 +36,38 @@ const getAllErrorEvents = async (
   }
 };
 
-export default { collectErrorEvent, getAllErrorEvents };
+const getErrorEvent = async (req: express.Request, res: express.Response) => {
+  try {
+    const { errorEventId } = req.params;
+    const errorEvent: ErrorEventDocument = await errorEventService.getErrorEvent(
+      errorEventId
+    );
+    res.json(errorEvent);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
+};
+
+const listIssueErrorEvents = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const issueId = new mongoose.Types.ObjectId(req.params.issueId);
+    const ErrorEventList: ErrorEventDocument[] = await errorEventService.getErrorEventByIssueId(
+      issueId
+    );
+    res.json(ErrorEventList);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
+};
+
+export default {
+  collectErrorEvent,
+  getAllErrorEvents,
+  getErrorEvent,
+  listIssueErrorEvents,
+};
