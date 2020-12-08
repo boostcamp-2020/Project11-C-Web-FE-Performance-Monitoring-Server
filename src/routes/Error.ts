@@ -5,4 +5,5 @@ const router: express.Router = express();
 
 router.post('/:projectId', ErrorController.collectErrorEvent);
 router.get('/', ErrorController.getAllErrorEvents);
+router.get('/issue/:issueId', ErrorController.listIssueErrorEvents);
 export default router;
