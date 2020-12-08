@@ -1,7 +1,14 @@
 import * as mongoose from 'mongoose';
 
 export const ErrorEventSchema: mongoose.Schema = new mongoose.Schema({
+  name: String,
+  message: String,
+  stack: String,
   content: String,
+  issueId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Issue',
+  },
   projectId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project',
@@ -11,19 +18,21 @@ export const ErrorEventSchema: mongoose.Schema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  userInfo: {},
-  tags: [[String, String]],
+  tags: {},
   hash: String,
 });
 
 export interface ErrorEventDocument extends mongoose.Document {
+  name: String;
+  message: String;
+  stack: String;
   content: String;
   date: Date;
   errArea: mongoose.Schema.Types.Mixed;
-  userInfo: {};
-  tags: [[String, String]];
+  tags: {};
   hash: String;
-  projectId: mongoose.Schema.Types.ObjectId;
+  issueId: mongoose.Types.ObjectId;
+  projectId: mongoose.Types.ObjectId;
 }
 
 const ErrorEvent: mongoose.Model<ErrorEventDocument> = mongoose.model(
