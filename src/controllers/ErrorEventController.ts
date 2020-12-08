@@ -36,6 +36,19 @@ const getAllErrorEvents = async (
   }
 };
 
+const getErrorEvent = async (req: express.Request, res: express.Response) => {
+  try {
+    const { errorEventId } = req.params;
+    const errorEvent: ErrorEventDocument = await errorEventService.getErrorEvent(
+      errorEventId
+    );
+    res.json(errorEvent);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
+};
+
 const listIssueErrorEvents = async (
   req: express.Request,
   res: express.Response
@@ -52,4 +65,9 @@ const listIssueErrorEvents = async (
   }
 };
 
-export default { collectErrorEvent, getAllErrorEvents, listIssueErrorEvents };
+export default {
+  collectErrorEvent,
+  getAllErrorEvents,
+  getErrorEvent,
+  listIssueErrorEvents,
+};
