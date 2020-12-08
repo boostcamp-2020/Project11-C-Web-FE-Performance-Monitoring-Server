@@ -10,7 +10,6 @@ const listAllIssues = async (req: express.Request, res: express.Response) => {
 
 const issueDetail = async (req: express.Request, res: express.Response) => {
   const { issueId } = req.params;
-  console.log(issueId);
   const issue: IssueDocument = await issueService.getIssue(issueId);
   res.json(issue);
 };
