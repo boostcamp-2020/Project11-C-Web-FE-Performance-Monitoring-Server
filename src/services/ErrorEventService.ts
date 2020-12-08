@@ -1,19 +1,20 @@
 import * as crpyto from 'crypto';
+import * as mongoose from 'mongoose';
 import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
 
 export const saveErrorEvent = async (LogData: {}) => {
   const hash: string = crpyto
     .createHash('md5')
     // eslint-disable-next-line dot-notation
-    .update(LogData['content'])
+    .update(LogData['stack'])
     .digest('hex');
   const newErrorEvent = new ErrorEvent({ ...LogData, hash });
   await newErrorEvent.save();
   return newErrorEvent;
 };
 
-export const getErrorEvent = async (eventId: String) => {
-  const res: ErrorEventDocument = await ErrorEvent.findById(eventId).exec();
+export const getErrorEvent = async (errorEventId: String) => {
+  const res: ErrorEventDocument = await ErrorEvent.findById(errorEventId);
   return res;
 };
 
