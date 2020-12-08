@@ -22,3 +22,13 @@ export const getAllErrorEvent = async () => {
   const res: ErrorEventDocument[] = await ErrorEvent.find().exec();
   return res;
 };
+export const getErrorEventByIssueId = async (
+  issueId: mongoose.Types.ObjectId
+) => {
+  const res: ErrorEventDocument[] = await ErrorEvent.find({
+    issueId,
+  })
+    .sort({ date: -1 })
+    .exec();
+  return res;
+};
