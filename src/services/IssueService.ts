@@ -63,7 +63,7 @@ export const addErrorEventToISsue = async (errorEvent: ErrorEventDocument) => {
   return appendErrorEventToIssue(errorEvent);
 };
 
-export const getIssueListOfProject = async (
+export const getIssueListByProjectId = async (
   projectId: mongoose.Types.ObjectId
 ) => {
   const res: IssueDocument[] = await Issue.find({ projectId }).exec();

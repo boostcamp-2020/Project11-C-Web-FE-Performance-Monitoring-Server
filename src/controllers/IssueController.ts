@@ -21,7 +21,7 @@ const listProjectIssues = async (
 ) => {
   const projectId = new mongoose.Types.ObjectId(req.params.projectId);
 
-  const issuelist: IssueDocument[] = await issueService.getIssueListOfProject(
+  const issuelist: IssueDocument[] = await issueService.getIssueListByProjectId(
     projectId
   );
   res.json(issuelist);
