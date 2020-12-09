@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as passport from 'passport';
 import loginRouter from './auth/Login';
-import logRouter from './log/Log';
 import errorEventRouter from './Error';
 import issueRouter from './Issue';
 import projectRouter from './ProjectRoute';
@@ -9,7 +8,6 @@ import userRouter from './UserRoute';
 
 const router: express.Router = express();
 router.use('/oauth', loginRouter);
-router.use('/log', logRouter);
 router.use('/errorevent', errorEventRouter);
 router.use(
   '/issue',
