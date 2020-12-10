@@ -4,11 +4,11 @@ import User, { UserDocument } from '../models/User';
 
 const createProject = async (user: any, data: any) => {
   const { userId } = user;
-  const { title, description, framework, dsn } = data;
+  const { title, description, platform, dsn } = data;
   const docs = Object({
     title,
     description,
-    framework,
+    platform,
     dsn,
     owner: userId,
   });
@@ -16,7 +16,7 @@ const createProject = async (user: any, data: any) => {
   try {
     const project: ProjectDocument = await Project.create(docs);
 
-    project.dsn += `/${project._id}`;
+    project.dsn = `${process.env.SERVER_ADDR}/errorevent/${project._id}`;
     await project.save();
 
     const updatedUser: UserDocument = await User.findByIdAndUpdate(
