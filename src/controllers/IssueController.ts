@@ -26,4 +26,33 @@ const listProjectIssues = async (
   res.json(issuelist);
 };
 
-export default { listAllIssues, issueDetail, listProjectIssues };
+const issueAssign = async (req: express.Request, res: express.Response) => {
+  const issueId = new mongoose.Types.ObjectId(req.body.issueId);
+  const { assignee } = req.body;
+
+  const updatedIssue: IssueDocument = await issueService.setAssignee(
+    issueId,
+    assignee ? new mongoose.Types.ObjectId(assignee) : null
+  );
+  res.json(updatedIssue);
+};
+const issueResolvedState = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const issueId = new mongoose.Types.ObjectId(req.body.issueId);
+  const { resolved } = req.body;
+  const updatedIssue: IssueDocument = await issueService.setResolvedState(
+    issueId,
+    resolved
+  );
+  res.json(updatedIssue);
+};
+
+export default {
+  listAllIssues,
+  issueDetail,
+  listProjectIssues,
+  issueAssign,
+  issueResolvedState,
+};
