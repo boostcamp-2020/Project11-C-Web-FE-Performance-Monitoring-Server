@@ -9,6 +9,10 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    resolved: {
+      type: Boolean,
+      default: false,
+    },
     message: {
       type: String,
     },
@@ -28,6 +32,10 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
         ref: 'ErrorEvent',
       },
     ],
+    assignee: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
     comments: [CommentSchema],
   },
   {
@@ -43,6 +51,7 @@ export interface IssueDocument extends mongoose.Document {
   comments: CommentDocument[];
   errorEvents: mongoose.Types.ObjectId[];
   projectId: mongoose.Types.ObjectId;
+  resolved: Boolean;
 }
 
 const Issue: mongoose.Model<IssueDocument> = mongoose.model(
