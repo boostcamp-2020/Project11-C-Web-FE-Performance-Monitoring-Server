@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import Issue, { IssueDocument } from '../models/Issue';
 import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
-
+import Project, { ProjectDocument } from '../models/Project';
 // 기존 issue가 없을 경우 새로 만들어낸다
 export const createIssue = async (errorEvent: ErrorEventDocument) => {
   const { name } = errorEvent;
@@ -33,7 +33,8 @@ export const appendErrorEventToIssue = async (
   const res: IssueDocument = await Issue.findOneAndUpdate(
     { groupHash: errorEvent.hash },
     // eslint-disable-next-line no-underscore-dangle
-    { $push: { errorEvents: errorEvent._id } }
+    { $push: { errorEvents: errorEvent._id } },
+    { new: true }
   );
 
   errorEvent.issueId = res._id;
@@ -56,18 +57,33 @@ export const hasIssue = async (groupHash: String) => {
   return !!res;
 };
 
-export const addErrorEventToISsue = async (errorEvent: ErrorEventDocument) => {
-  if (!(await hasIssue(errorEvent.hash))) {
-    return createIssue(errorEvent);
-  }
-  return appendErrorEventToIssue(errorEvent);
-};
-
 export const getIssueListByProjectId = async (
   projectId: mongoose.Types.ObjectId
 ) => {
   const res: IssueDocument[] = await Issue.find({ projectId }).exec();
   return res;
+};
+
+export const addIssueToProject = async (issue: IssueDocument) => {
+  const { projectId } = issue;
+
+  const res: ProjectDocument = await Project.findOneAndUpdate(
+    { _id: projectId },
+    // eslint-disable-next-line no-underscore-dangle
+    { $push: { issues: issue._id } },
+    { new: true }
+  );
+  return res;
+};
+
+export const addErrorEventToISsue = async (errorEvent: ErrorEventDocument) => {
+  let resIssueDoc = null;
+  if (!(await hasIssue(errorEvent.hash))) {
+    resIssueDoc = await createIssue(errorEvent);
+    await addIssueToProject(resIssueDoc);
+  } else resIssueDoc = await appendErrorEventToIssue(errorEvent);
+
+  return resIssueDoc;
 };
 
 export const setAssignee = async (
