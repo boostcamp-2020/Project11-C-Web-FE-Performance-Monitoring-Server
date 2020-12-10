@@ -43,7 +43,8 @@ export const appendErrorEventToIssue = async (
 };
 
 export const getIssue = async (issueId: String) => {
-  const res: IssueDocument = await Issue.findById(issueId).exec();
+  const issueDoc: IssueDocument = await Issue.findById(issueId).exec();
+  const res = await issueDoc.populate('projectId').execPopulate();
   return res;
 };
 
