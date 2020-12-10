@@ -41,6 +41,24 @@ const readProject = async (user: any, projectId: string) => {
   return 'no permission';
 };
 
+// object id에 해당하는 document를 모두 join하여 반환
+const readProjectWithPopulate = async (user: any, projectId: string) => {
+  const { userId } = user;
+  const project: ProjectDocument = await Project.findById(projectId);
+  if (String(project.owner) === userId || project.members.includes(userId))
+    return project
+      .populate('owner')
+      .populate('members')
+      .populate({
+        path: 'issues',
+        populate: {
+          path: 'errorEvents',
+        },
+      })
+      .execPopulate();
+  return 'no permission';
+};
+
 const removeProject = async (user: any, projectId: string) => {
   const deletedProject: ProjectDocument = await Project.findOneAndDelete({
     _id: projectId,
@@ -116,6 +134,7 @@ const removeMember = async (user: any, projectId: string, memberId: string) => {
 export default {
   createProject,
   readProject,
+  readProjectWithPopulate,
   removeProject,
   pushMember,
   removeMember,
