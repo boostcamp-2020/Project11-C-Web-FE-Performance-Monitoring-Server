@@ -26,6 +26,22 @@ const getProject = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const getJoinedProject = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const result:
+      | ProjectDocument
+      | any = await ProjectService.readProjectWithPopulate(
+      req.user,
+      req.params.projectId
+    );
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
 const deleteProject = async (req: express.Request, res: express.Response) => {
   try {
     const result: ProjectDocument = await ProjectService.removeProject(
@@ -67,6 +83,7 @@ const deleteMember = async (req: express.Request, res: express.Response) => {
 export default {
   postProject,
   getProject,
+  getJoinedProject,
   deleteProject,
   postMember,
   deleteMember,
