@@ -69,3 +69,26 @@ export const getIssueListByProjectId = async (
   const res: IssueDocument[] = await Issue.find({ projectId }).exec();
   return res;
 };
+
+export const setAssignee = async (
+  issueId: mongoose.Types.ObjectId,
+  assignee: mongoose.Types.ObjectId
+) => {
+  const filter = { _id: issueId };
+  const update = { assignee };
+  const res: IssueDocument = await Issue.findOneAndUpdate(filter, update, {
+    new: true,
+  });
+  return res;
+};
+export const setResolvedState = async (
+  issueId: mongoose.Types.ObjectId,
+  resolved: Boolean
+) => {
+  const filter = { _id: issueId };
+  const update = { resolved };
+  const res: IssueDocument = await Issue.findOneAndUpdate(filter, update, {
+    new: true,
+  });
+  return res;
+};
