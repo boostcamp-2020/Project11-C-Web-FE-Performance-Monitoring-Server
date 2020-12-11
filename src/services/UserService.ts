@@ -14,6 +14,12 @@ const findUser = async (id: string) => {
   return user;
 };
 
+const readUsers = async () => {
+  const list: any = await User.find();
+
+  return list;
+};
+
 const readProjects = async (user: any) => {
   const { projects } = await User.findOne({ _id: user.userId }).populate({
     path: 'projects',
@@ -24,4 +30,4 @@ const readProjects = async (user: any) => {
   return projects;
 };
 
-export default { findUser, readProjects };
+export default { findUser, readUsers, readProjects };
