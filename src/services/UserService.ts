@@ -18,7 +18,7 @@ const readProjects = async (user: any) => {
   const { projects } = await User.findOne({ _id: user.userId }).populate({
     path: 'projects',
     model: 'Project',
-    select: '_id title description framework issues owner createdAt',
+    select: '_id title description platform issues owner createdAt',
     populate: { path: 'owner', model: 'User', select: '_id name' },
   });
   return projects;

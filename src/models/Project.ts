@@ -10,7 +10,7 @@ const projectSchema: mongoose.Schema = new mongoose.Schema(
     description: {
       type: String,
     },
-    framework: {
+    platform: {
       type: String,
     },
     dsn: {
@@ -41,7 +41,7 @@ const projectSchema: mongoose.Schema = new mongoose.Schema(
 export interface ProjectDocument extends mongoose.Document {
   title: String;
   description: String;
-  framework: String;
+  platform: String;
   dsn: String;
   owner: mongoose.Schema.Types.ObjectId;
   members: Array<mongoose.Schema.Types.ObjectId>;
