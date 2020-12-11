@@ -9,6 +9,15 @@ const getUser = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const getUsers = async (req: express.Request, res: express.Response) => {
+  try {
+    const result: any = await UserService.readUsers();
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
 const getProjects = async (req: express.Request, res: express.Response) => {
   try {
     const result: {} = await UserService.readProjects(req.user);
@@ -18,4 +27,4 @@ const getProjects = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export default { getUser, getProjects };
+export default { getUser, getUsers, getProjects };
