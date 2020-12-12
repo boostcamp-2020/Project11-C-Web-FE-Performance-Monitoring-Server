@@ -32,9 +32,11 @@ export const appendErrorEventToIssue = async (
   errorEvent: ErrorEventDocument
 ) => {
   const res: IssueDocument = await Issue.findOneAndUpdate(
-    { groupHash: errorEvent.hash },
+    { projectId: errorEvent.projectId, groupHash: errorEvent.hash },
     // eslint-disable-next-line no-underscore-dangle
-    { $push: { errorEvents: errorEvent._id } },
+    {
+      $push: { errorEvents: errorEvent._id },
+    },
     { new: true }
   );
 
