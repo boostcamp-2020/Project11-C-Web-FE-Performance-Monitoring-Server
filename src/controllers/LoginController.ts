@@ -19,7 +19,7 @@ const googleLogin = (req: express.Request, res: express.Response) => {
       if (!userStatus) throw new Error('deleted user');
 
       if (token) {
-        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
+        res.cookie('jwt', token, { httpOnly: true });
         return res.redirect(process.env.ADMIN_ADDR_MAIN);
       }
 
@@ -41,7 +41,7 @@ const githubLogin = (req: express.Request, res: express.Response) => {
       if (!userStatus) throw new Error('deleted user');
 
       if (token) {
-        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
+        res.cookie('jwt', token, { httpOnly: true });
         return res.redirect(process.env.ADMIN_ADDR_MAIN);
       }
 
@@ -65,7 +65,7 @@ const naverLogin = async (req: express.Request, res: express.Response) => {
       LoginService.saveData(user, 'naver');
 
       if (token) {
-        res.cookie('jwt', token, { domain: 'localhost', httpOnly: true });
+        res.cookie('jwt', token, { httpOnly: true });
         return res.redirect(process.env.ADMIN_ADDR_MAIN);
       }
 
