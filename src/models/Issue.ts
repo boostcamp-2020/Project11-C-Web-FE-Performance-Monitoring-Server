@@ -53,7 +53,10 @@ export interface IssueDocument extends mongoose.Document {
   projectId: mongoose.Types.ObjectId;
   resolved: Boolean;
 }
-
+export interface IssueResolveStateInfo {
+  issueIdList: mongoose.Types.ObjectId[];
+  resolved: Boolean;
+}
 const Issue: mongoose.Model<IssueDocument> = mongoose.model(
   'Issue',
   IssueSchema
