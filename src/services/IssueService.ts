@@ -135,13 +135,12 @@ export const setAssignee = async (
   return res;
 };
 export const setResolvedState = async (
-  projectId: mongoose.Types.ObjectId,
   targetIssueInfo: IssueResolveStateInfo
 ) => {
   const { issueIdList, resolved } = targetIssueInfo;
 
   const res: any = await Issue.updateMany(
-    { projectId, _id: { $in: issueIdList } },
+    { _id: { $in: issueIdList } },
     { $set: { resolved } }
   ).exec();
 

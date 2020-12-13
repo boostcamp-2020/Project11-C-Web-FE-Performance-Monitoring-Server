@@ -90,13 +90,9 @@ const issueResolvedState = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const projectId = new mongoose.Types.ObjectId(req.params.projectId);
   const resolveStateInfo: IssueResolveStateInfo = req.body;
 
-  const updateRes: any = await issueService.setResolvedState(
-    projectId,
-    resolveStateInfo
-  );
+  const updateRes: any = await issueService.setResolvedState(resolveStateInfo);
 
   res.json(updateRes);
 };
