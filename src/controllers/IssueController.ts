@@ -1,22 +1,23 @@
 import * as express from 'express';
 import * as mongoose from 'mongoose';
-import Issue, { IssueDocument, IssueResolveStateInfo } from '../models/Issue';
+import { IssueDocument, IssueResolveStateInfo } from '../models/Issue';
 import * as issueService from '../services/IssueService';
 
 const listAllIssues = async (req: express.Request, res: express.Response) => {
   const issueList: IssueDocument[] = await issueService.getAllIssue();
   res.json(issueList);
 };
-/*
-const listAllIssuesWithPagination = async (req: express.Request, res: express.Response) => {
-  // 페이지당 issue 개수
-  const itemNumPerPage = 10;
 
+const getProjectIssuesWitPagination = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { projectId } = req.params;
   const { page, limit, order, resolved, asignee } = req.query;
 
   const pageOptions = {
     page: parseInt(page as string, 10) || 1,
-    limit: parseInt(limit as string, 10) || 10,
+    limit: parseInt(limit as string, 10) || 20,
   }; // order event 개수, 최신순, 오래된순,
   let sortQuery = null;
   switch (order) {
@@ -26,8 +27,11 @@ const listAllIssuesWithPagination = async (req: express.Request, res: express.Re
     case 'old':
       sortQuery = { updatedAt: 'asc' };
       break;
-    case 'event':
-      sortQuery = { errorEvents: 'asc' };
+    case 'eventdesc':
+      sortQuery = { errorcnt: -1 };
+      break;
+    case 'eventasc':
+      sortQuery = { errorcnt: 1 };
       break;
     default:
       sortQuery = { updatedAt: 'desc' };
@@ -35,25 +39,24 @@ const listAllIssuesWithPagination = async (req: express.Request, res: express.Re
   }
 
   const queryCond = {
+    projectId: new mongoose.Types.ObjectId(projectId),
     ...(resolved && { resolved: Boolean(resolved) }),
     ...(asignee && { asignee: String(asignee) }),
   };
-  console.log(queryCond, pageOptions, sortQuery);
 
-  const resPage: {
-    issueDocList: IssueDocument[];
-    pageinfo: {
-      pageNum: number;
-      totalItemNum: number;
-    };
-  } = await issueService.getIssueListWithPagination(
-    pageOptions,
+  const options: mongoose.PaginateOptions = {
+    page: pageOptions.page,
+    limit: pageOptions.limit,
+    sort: sortQuery,
+  };
+
+  const result = await issueService.getIssueListWithPagination(
     queryCond,
-    sortQuery
+    options
   );
-  res.json(resPage);
+
+  res.json(result);
 };
-*/
 
 const issueDetail = async (req: express.Request, res: express.Response) => {
   const { issueId } = req.params;
@@ -99,6 +102,7 @@ const issueResolvedState = async (
 
 export default {
   listAllIssues,
+  getProjectIssuesWitPagination,
   issueDetail,
   listProjectIssues,
   issueAssign,
