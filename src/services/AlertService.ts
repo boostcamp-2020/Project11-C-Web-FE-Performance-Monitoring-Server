@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import AlertEvent, { AlertDocument, AlertType } from '../models/AlertEvent';
+import AlertEvent, { AlertDocument, AlertType } from '../models/Alert';
 import { IssueDocument } from '../models/Issue';
 import User from '../models/User';
 import MailService from './MailService';
