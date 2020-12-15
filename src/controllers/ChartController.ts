@@ -27,4 +27,16 @@ const getIssue = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export default { getDailyError, getIssue };
+const getTag = async (req: express.Request, res: express.Response) => {
+  try {
+    const result = await ChartService.readTag(
+      req.user as ReqUserDocument,
+      req.params.projectId as string
+    );
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+export default { getDailyError, getIssue, getTag };

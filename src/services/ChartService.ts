@@ -156,7 +156,76 @@ const readIssue = async (user: ReqUserDocument, projectId: string) => {
   };
 };
 
+const readTag = async (user: ReqUserDocument, projectId: string) => {
+  if (!checkPermission(user, projectId)) return 'no permission';
+
+  const tagsArr = await ErrorEvent.find(
+    {
+      projectId: mongoose.Types.ObjectId(projectId),
+    },
+    { tags: 1 }
+  );
+
+  const browsers = {};
+  const platforms = {};
+  const osVersions = {};
+  const urls = {};
+  const methods = {};
+  const countIdx = 1;
+
+  tagsArr.forEach((item: any) => {
+    const {
+      tags: { browser, platform, osVersion, url, method },
+    } = item;
+
+    if (browser) {
+      if (browsers[browser]) {
+        browsers[browser][countIdx] += 1;
+      } else {
+        browsers[browser] = [browser, 1];
+      }
+    }
+    if (platform) {
+      if (platforms[platform]) {
+        platforms[platform][countIdx] += 1;
+      } else {
+        platforms[platform] = [platform, 1];
+      }
+    }
+    if (osVersion) {
+      if (osVersions[osVersion]) {
+        osVersions[osVersion][countIdx] += 1;
+      } else {
+        osVersions[osVersion] = [osVersion, 1];
+      }
+    }
+    if (url) {
+      if (urls[url]) {
+        urls[url][countIdx] += 1;
+      } else {
+        urls[url] = [url, 1];
+      }
+    }
+    if (method) {
+      if (methods[method]) {
+        methods[method][countIdx] += 1;
+      } else {
+        methods[method] = [method, 1];
+      }
+    }
+  });
+
+  return {
+    browsers: objToArr(browsers),
+    platforms: objToArr(platforms),
+    osVersions: objToArr(osVersions),
+    urls: objToArr(urls),
+    methods: objToArr(methods),
+  };
+};
+
 export default {
   readDailyError,
   readIssue,
+  readTag,
 };
