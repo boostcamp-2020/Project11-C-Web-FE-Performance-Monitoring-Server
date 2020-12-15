@@ -11,5 +11,6 @@ router.delete('/:projectId', ProjectController.deleteProject);
 router.post('/:projectId/member', ProjectController.postMember);
 router.delete('/:projectId/member/:memberId', ProjectController.deleteMember);
 router.get('/:projectId/chart/dailyError', ChartController.getDailyError);
+router.get('/:projectId/chart/issue', ChartController.getIssue);
 
 export default router;

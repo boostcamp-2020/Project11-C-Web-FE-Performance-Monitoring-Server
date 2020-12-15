@@ -2,14 +2,29 @@ import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import { ReqUserDocument } from '../models/User';
 import ErrorEvent from '../models/ErrorEvent';
+import Issue from '../models/Issue';
+
+const checkPermission = (user: ReqUserDocument, projectId: string): boolean => {
+  return user.projects.some(project => String(project) === projectId);
+};
+
+const objToArr = (obj: object): object[] => {
+  const arr = [];
+  Object.keys(obj).forEach(item => {
+    const temp = {};
+    temp['name'] = item;
+    temp['value'] = obj[item];
+    arr.push(temp);
+  });
+  return arr;
+};
 
 const readDailyError = async (
   user: ReqUserDocument,
   projectId: string,
   day: string
 ) => {
-  if (!user.projects.some(project => String(project) === projectId))
-    return 'no permission';
+  if (!checkPermission(user, projectId)) return 'no permission';
 
   const endDay = moment().endOf('day').toDate();
   const startDay = moment(endDay)
@@ -84,8 +99,64 @@ const readDailyError = async (
     currentDate = moment(currentDate).add(1, 'days').toDate();
   }
 
-  const result = { dates, ...errors };
-  return result;
+  return { dates, errors: objToArr(errors) };
 };
 
-export default { readDailyError };
+const readIssue = async (user: ReqUserDocument, projectId: string) => {
+  if (!checkPermission(user, projectId)) return 'no permission';
+
+  const tempItems = await Issue.aggregate([
+    {
+      $match: {
+        projectId: mongoose.Types.ObjectId(projectId),
+      },
+    },
+    {
+      $group: {
+        _id: {
+          name: '$name',
+          resolved: '$resolved',
+        },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { '_id.name': 1 } },
+  ]);
+
+  const allIssue = {};
+  const unresolvedIssue = {};
+  const resolvedRate = { true: 0, false: 0 };
+  const countIdx = 1;
+
+  tempItems.forEach(item => {
+    const {
+      _id: { name, resolved },
+      count,
+    } = item;
+
+    if (allIssue[name]) {
+      allIssue[name][countIdx] += count;
+    } else {
+      allIssue[name] = [name, count];
+    }
+    if (!resolved) {
+      if (unresolvedIssue[name]) {
+        unresolvedIssue[name][countIdx] += count;
+      } else {
+        unresolvedIssue[name] = [name, count];
+      }
+    }
+    resolvedRate[resolved] += count;
+  });
+
+  return {
+    allIssue: objToArr(allIssue),
+    unresolvedIssue: objToArr(unresolvedIssue),
+    resolvedRate,
+  };
+};
+
+export default {
+  readDailyError,
+  readIssue,
+};

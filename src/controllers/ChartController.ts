@@ -15,4 +15,16 @@ const getDailyError = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export default { getDailyError };
+const getIssue = async (req: express.Request, res: express.Response) => {
+  try {
+    const result = await ChartService.readIssue(
+      req.user as ReqUserDocument,
+      req.params.projectId as string
+    );
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+export default { getDailyError, getIssue };
