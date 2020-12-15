@@ -9,12 +9,11 @@ const checkPermission = (user: ReqUserDocument, projectId: string): boolean => {
 };
 
 const objToArr = (obj: object): object[] => {
-  const arr = [];
-  Object.keys(obj).forEach(item => {
+  const arr = Object.keys(obj).map(item => {
     const temp = {};
     temp['name'] = item;
     temp['value'] = obj[item];
-    arr.push(temp);
+    return temp;
   });
   return arr;
 };
