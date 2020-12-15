@@ -43,9 +43,9 @@ export interface ProjectDocument extends mongoose.Document {
   description: String;
   platform: String;
   dsn: String;
-  owner: mongoose.Schema.Types.ObjectId;
-  members: Array<mongoose.Schema.Types.ObjectId>;
-  issues: Array<mongoose.Schema.Types.ObjectId>;
+  owner: mongoose.Types.ObjectId;
+  members: Array<mongoose.Types.ObjectId>;
+  issues: Array<mongoose.Types.ObjectId>;
   createdAt: Date;
   updatedAt: Date;
 }
