@@ -81,10 +81,11 @@ const getProjectMemberList = async (projectId: string) => {
     _id: projectId,
   })
     .populate('members')
+    .populate('owner')
     .exec();
 
-  const { members } = projectDocument;
-  const projectMemberList = [...members];
+  const { members, owner } = projectDocument;
+  const projectMemberList = [...members, owner];
   return projectMemberList;
 };
 

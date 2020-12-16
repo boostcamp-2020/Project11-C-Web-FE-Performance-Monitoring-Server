@@ -48,8 +48,8 @@ const addNewAlertEvent = async (
   <div>
    ${newIssue.stack}
   </div>
-  
-  <a href="http://${process.env.FRONT_HOST}/issues/${
+ 
+  <a href="${process.env.FRONT_HOST}/projects/issues/detail/${
       // eslint-disable-next-line no-underscore-dangle
       newIssue._id
     }" >해당 issue page로 이동하기</a>
@@ -89,7 +89,7 @@ const addInviteProjectAlert = async (
 
   const mailTemplate = `
   <h2> ${inviteUserInfo.name}님이 프로젝트 ${project.title}에 초대했습니다.</h2>
-  <a href="http://${process.env.FRONT_HOST}/projects/${
+  <a href="${process.env.FRONT_HOST}/projects/issues/${
     // eslint-disable-next-line no-underscore-dangle
     project._id
   }" > 프로젝트 페이지로 이동하기</a>
