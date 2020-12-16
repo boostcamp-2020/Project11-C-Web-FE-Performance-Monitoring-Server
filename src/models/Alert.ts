@@ -19,6 +19,11 @@ export const AlertSchema: mongoose.Schema = new mongoose.Schema(
       default: null,
     },
 
+    to: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Issue',
+      default: null,
+    },
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Project',
@@ -38,6 +43,7 @@ export interface AlertDocument extends mongoose.Document {
   alertType: AlertType;
   issue: mongoose.Types.ObjectId;
   from: mongoose.Types.ObjectId;
+  to: mongoose.Types.ObjectId;
   project: mongoose.Types.ObjectId;
   createdAt: Date;
 }
