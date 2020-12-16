@@ -78,6 +78,7 @@ const addInviteProjectAlert = async (
     issue: null,
     from,
     project: project._id,
+    to: newMember,
   };
 
   const inviteUserInfo = await User.findById(from);
@@ -112,6 +113,7 @@ const getAlertList = async (user: any) => {
 
   const res: AlertDocument[] = await AlertEvent.find({
     project: { $in: projects },
+    to: { $in: [userId, null] },
   })
     .populate({
       path: 'project',
