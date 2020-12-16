@@ -8,12 +8,19 @@ import MailService from './MailService';
 import ProjectService from './ProjectService';
 import UserService from './UserService';
 
+/**
+ *
+ * TODO: alert 보내는 함수에 이메일 템플릿이 하드코딩 되어있음
+ * 따로 빼서 관리하도록 개선해야됨
+ */
+
 const addNewAlertEvent = async (
   user: mongoose.Types.ObjectId | null,
   newIssue: IssueDocument
 ) => {
   const newIssueType: AlertType = {
-    name: 'newIssue',
+    type: -1,
+    name: 'NEW-ISSUE',
     title: '새로운 이슈 발생',
   };
 
@@ -37,7 +44,6 @@ const addNewAlertEvent = async (
   <h2> 새로운 issue 발생  </h2>
   <h3> ${newIssue.name}  - ${newIssue.message}  </h3>
   <h4> 발생 시각 : ${new Date(newIssue.createdAt).toLocaleString()}  </h4>
-
   <h3> STACK MESSAGE  </h3>
   <div>
    ${newIssue.stack}
@@ -61,7 +67,8 @@ const addInviteProjectAlert = async (
   project: ProjectDocument
 ) => {
   const newInviteType: AlertType = {
-    name: 'invitedProject',
+    type: 1,
+    name: 'INVITE',
     title: '프로젝트에 초대됨',
   };
 
@@ -81,7 +88,6 @@ const addInviteProjectAlert = async (
 
   const mailTemplate = `
   <h2> ${inviteUserInfo.name}님이 프로젝트 ${project.title}에 초대했습니다.</h2>
-
   <a href="http://${process.env.FRONT_HOST}/projects/${
     // eslint-disable-next-line no-underscore-dangle
     project._id
@@ -116,6 +122,7 @@ const getAlertList = async (user: any) => {
       path: 'from',
       model: 'User',
     })
+    .sort({ createdAt: -1 })
     .exec();
 
   return res;

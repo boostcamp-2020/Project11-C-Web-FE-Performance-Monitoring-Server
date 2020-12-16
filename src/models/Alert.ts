@@ -30,6 +30,7 @@ export const AlertSchema: mongoose.Schema = new mongoose.Schema(
   }
 );
 export interface AlertType extends Object {
+  type: Number;
   name: String;
   title: String;
 }
