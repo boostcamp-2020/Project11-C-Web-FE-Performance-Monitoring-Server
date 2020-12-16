@@ -215,11 +215,11 @@ const readTag = async (user: ReqUserDocument, projectId: string) => {
   });
 
   return {
-    browsers: objToArr(browsers),
-    platforms: objToArr(platforms),
-    osVersions: objToArr(osVersions),
-    urls: objToArr(urls),
-    methods: objToArr(methods),
+    browser: objToArr(browsers),
+    platform: objToArr(platforms),
+    osVersion: objToArr(osVersions),
+    url: objToArr(urls),
+    method: objToArr(methods),
   };
 };
 
