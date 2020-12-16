@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 import { IssueDocument, IssueResolveStateInfo } from '../models/Issue';
 import * as issueService from '../services/IssueService';
+import UserService from '../services/UserService';
 
 const listAllIssues = async (req: express.Request, res: express.Response) => {
   const issueList: IssueDocument[] = await issueService.getAllIssue();
@@ -68,11 +69,24 @@ const listProjectIssues = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const projectId = new mongoose.Types.ObjectId(req.params.projectId);
+  const { projectId } = req.params;
+  const { userId } = req.user as any;
+
+  let projectObjId =
+    projectId === 'undefined' || !projectId
+      ? null
+      : new mongoose.Types.ObjectId(projectId);
+
+  if (!projectObjId) {
+    projectObjId = await (await UserService.findUser(userId)).recentProject;
+  }
 
   const issuelist: IssueDocument[] = await issueService.getIssueListByProjectId(
-    projectId
+    projectObjId
   );
+
+  await UserService.updateRecentProject(req.user, projectObjId);
+
   res.json(issuelist);
 };
 

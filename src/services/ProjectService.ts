@@ -1,6 +1,9 @@
 /* eslint-disable no-underscore-dangle */
+import { Mongoose } from 'mongoose';
 import Project, { ProjectDocument } from '../models/Project';
 import User, { UserDocument } from '../models/User';
+import * as mongoose from 'mongoose';
+import AlertService from './AlertService';
 
 const createProject = async (user: any, data: any) => {
   const { userId } = user;
@@ -39,6 +42,11 @@ const readProject = async (user: any, projectId: string) => {
   if (String(project.owner) === userId || project.members.includes(userId))
     return project;
   return 'no permission';
+};
+
+const getProjectByprojectId = async (projectId: string) => {
+  const project: ProjectDocument = await Project.findById(projectId);
+  return project;
 };
 
 // object id에 해당하는 document를 모두 join하여 반환
@@ -144,12 +152,45 @@ const removeMember = async (user: any, projectId: string, memberId: string) => {
   return updatedProject;
 };
 
+const inivteUser = async (
+  projectId: mongoose.Types.ObjectId,
+  newMember: mongoose.Types.ObjectId
+) => {
+  const updatedProject: ProjectDocument = await Project.findOneAndUpdate(
+    {
+      _id: projectId,
+    },
+    {
+      $addToSet: { members: newMember },
+    },
+    { new: true }
+  );
+
+  const updatedUser: UserDocument = await User.findByIdAndUpdate(
+    { _id: newMember },
+    {
+      $addToSet: { projects: updatedProject._id },
+    },
+    { new: true }
+  );
+
+  const alertRes = await AlertService.addInviteProjectAlert(
+    updatedProject.owner,
+    updatedUser._id,
+    updatedProject
+  );
+
+  return updatedProject;
+};
+
 export default {
   createProject,
   readProject,
+  getProjectByprojectId,
   readProjectWithPopulate,
   removeProject,
   pushMember,
   removeMember,
   getProjectMemberList,
+  inivteUser,
 };

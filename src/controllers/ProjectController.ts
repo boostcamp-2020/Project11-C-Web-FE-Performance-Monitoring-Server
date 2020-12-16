@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { ProjectDocument } from '../models/Project';
 import ProjectService from '../services/ProjectService';
+import * as mongoose from 'mongoose';
 
 const postProject = async (req: express.Request, res: express.Response) => {
   try {
@@ -80,6 +81,18 @@ const deleteMember = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const iniviteMember = async (req: express.Request, res: express.Response) => {
+  const { projectId } = req.params;
+  const { userId } = req.body;
+
+  const result = await ProjectService.inivteUser(
+    new mongoose.Types.ObjectId(projectId),
+    new mongoose.Types.ObjectId(userId)
+  );
+
+  res.json(result);
+};
+
 export default {
   postProject,
   getProject,
@@ -87,4 +100,5 @@ export default {
   deleteProject,
   postMember,
   deleteMember,
+  iniviteMember,
 };
