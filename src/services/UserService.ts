@@ -31,19 +31,9 @@ const readProjects = async (user: any) => {
   return projects;
 };
 
-const updateRecentProject = async (
-  user: any,
-  recentProjectId: mongoose.Types.ObjectId
-) => {
-  const { recentProject } = await User.findOneAndUpdate(
-    { _id: user.userId },
-    {
-      $set: { recentProject: recentProjectId },
-    },
-    { new: true }
-  );
-
-  return recentProject;
+const readUserByEmail = async (email: string) => {
+  const users: UserDocument[] = await User.find({ email, status: true });
+  return users;
 };
 
-export default { findUser, readUsers, readProjects, updateRecentProject };
+export default { findUser, readUsers, readProjects, readUserByEmail };

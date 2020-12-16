@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { UserDocument } from '../models/User';
 import UserService from '../services/UserService';
 
 const getUser = async (req: express.Request, res: express.Response) => {
@@ -27,4 +28,15 @@ const getProjects = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export default { getUser, getUsers, getProjects };
+const getUserByEmail = async (req: express.Request, res: express.Response) => {
+  try {
+    const result: UserDocument[] = await UserService.readUserByEmail(
+      req.params.email
+    );
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+export default { getUser, getUsers, getProjects, getUserByEmail };
