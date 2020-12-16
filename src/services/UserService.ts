@@ -1,5 +1,4 @@
-import * as mongoose from 'mongoose';
-import User, { UserDocument } from '../models/User';
+import User, { ReqUserDocument, UserDocument } from '../models/User';
 
 const findUser = async (id: string) => {
   const one: UserDocument = await User.findById(id);
@@ -21,7 +20,7 @@ const readUsers = async () => {
   return list;
 };
 
-const readProjects = async (user: any) => {
+const readProjects = async (user: ReqUserDocument) => {
   const { projects } = await User.findOne({ _id: user.userId }).populate({
     path: 'projects',
     model: 'Project',
@@ -31,8 +30,12 @@ const readProjects = async (user: any) => {
   return projects;
 };
 
-const readUserByEmail = async (email: string) => {
-  const users: UserDocument[] = await User.find({ email, status: true });
+const readUserByEmail = async (user: ReqUserDocument, email: string) => {
+  const users: UserDocument[] = await User.find({
+    email,
+    status: true,
+    _id: { $ne: user.userId },
+  });
   return users;
 };
 
