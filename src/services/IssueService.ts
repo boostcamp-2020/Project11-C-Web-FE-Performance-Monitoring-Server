@@ -92,7 +92,9 @@ export const hasIssue = async (errorEvent: ErrorEventDocument) => {
 export const getIssueListByProjectId = async (
   projectId: mongoose.Types.ObjectId
 ) => {
-  const res: IssueDocument[] = await Issue.find({ projectId }).exec();
+  const res: IssueDocument[] = await Issue.find({ projectId })
+    .populate('assignee')
+    .exec();
   return res;
 };
 

@@ -37,6 +37,7 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
     assignee: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      default: null,
     },
     comments: [CommentSchema],
   },
