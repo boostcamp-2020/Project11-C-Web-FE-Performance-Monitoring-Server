@@ -1,3 +1,4 @@
+import * as mongoose from 'mongoose';
 import User, { UserDocument } from '../models/User';
 
 const saveData = async (user: any, domain: string) => {
@@ -19,7 +20,8 @@ const saveData = async (user: any, domain: string) => {
   const temp: UserDocument = one || (await User.create(docs));
   const userId: any = temp._id;
   const userStatus: Boolean = temp.status;
-  return [userId, userStatus];
+  const { recentProject } = temp;
+  return [userId, userStatus, recentProject];
 };
 
 export default { saveData };

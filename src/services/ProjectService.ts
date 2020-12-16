@@ -39,8 +39,12 @@ const createProject = async (user: any, data: any) => {
 const readProject = async (user: any, projectId: string) => {
   const { userId } = user;
   const project: ProjectDocument = await Project.findById(projectId);
-  if (String(project.owner) === userId || project.members.includes(userId))
+  if (String(project.owner) === userId || project.members.includes(userId)) {
+    await User.findByIdAndUpdate(userId, {
+      $set: { recentProject: project._id },
+    });
     return project;
+  }
   return 'no permission';
 };
 
@@ -53,7 +57,10 @@ const getProjectByprojectId = async (projectId: string) => {
 const readProjectWithPopulate = async (user: any, projectId: string) => {
   const { userId } = user;
   const project: ProjectDocument = await Project.findById(projectId);
-  if (String(project.owner) === userId || project.members.includes(userId))
+  if (String(project.owner) === userId || project.members.includes(userId)) {
+    await User.findByIdAndUpdate(userId, {
+      $set: { recentProject: project._id },
+    });
     return project
       .populate('owner')
       .populate('members')
@@ -64,6 +71,7 @@ const readProjectWithPopulate = async (user: any, projectId: string) => {
         },
       })
       .execPopulate();
+  }
   return 'no permission';
 };
 

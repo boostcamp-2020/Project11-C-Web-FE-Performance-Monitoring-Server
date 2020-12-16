@@ -13,14 +13,21 @@ const googleLogin = (req: express.Request, res: express.Response) => {
     async (err: Error, user: any) => {
       if (err) return false;
 
-      const [userId, userStatus] = await LoginService.saveData(user, 'google');
+      const [userId, userStatus, recentProject] = await LoginService.saveData(
+        user,
+        'google'
+      );
       const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
 
       if (!userStatus) throw new Error('deleted user');
 
+      const redirectAddr = recentProject
+        ? `${process.env.ADMIN_ADDR_MAIN}/issues/${recentProject}`
+        : `${process.env.ADMIN_ADDR_MAIN}`;
+
       if (token) {
         res.cookie('jwt', token, { httpOnly: true });
-        return res.redirect(process.env.ADMIN_ADDR_MAIN);
+        return res.redirect(redirectAddr);
       }
 
       throw new Error('not found token');
@@ -35,14 +42,21 @@ const githubLogin = (req: express.Request, res: express.Response) => {
     async (err: Error, user: any) => {
       if (err) return false;
 
-      const [userId, userStatus] = await LoginService.saveData(user, 'github');
+      const [userId, userStatus, recentProject] = await LoginService.saveData(
+        user,
+        'github'
+      );
       const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
 
       if (!userStatus) throw new Error('deleted user');
 
+      const redirectAddr = recentProject
+        ? `${process.env.ADMIN_ADDR_MAIN}/issues/${recentProject}`
+        : `${process.env.ADMIN_ADDR_MAIN}`;
+
       if (token) {
         res.cookie('jwt', token, { httpOnly: true });
-        return res.redirect(process.env.ADMIN_ADDR_MAIN);
+        return res.redirect(redirectAddr);
       }
 
       throw new Error('not found token');
