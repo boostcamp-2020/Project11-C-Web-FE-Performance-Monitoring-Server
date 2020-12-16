@@ -42,6 +42,16 @@ export interface UserDocument extends mongoose.Document {
   recentProject: mongoose.Types.ObjectId;
 }
 
+export interface ReqUserDocument extends mongoose.Document {
+  userId: mongoose.Schema.Types.ObjectId;
+  name: String;
+  email: String;
+  imageURL: String;
+  status: Boolean;
+  projects: Array<mongoose.Schema.Types.ObjectId>;
+  recentProject: mongoose.Schema.Types.ObjectId;
+}
+
 const User: mongoose.Model<UserDocument> = mongoose.model('User', userSchema);
 
 export default User;
