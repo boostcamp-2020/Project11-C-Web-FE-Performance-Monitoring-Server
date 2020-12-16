@@ -1,3 +1,4 @@
+import * as mongoose from 'mongoose';
 import User, { UserDocument } from '../models/User';
 
 const findUser = async (id: string) => {
@@ -30,4 +31,19 @@ const readProjects = async (user: any) => {
   return projects;
 };
 
-export default { findUser, readUsers, readProjects };
+const updateRecentProject = async (
+  user: any,
+  recentProjectId: mongoose.Types.ObjectId
+) => {
+  const { recentProject } = await User.findOneAndUpdate(
+    { _id: user.userId },
+    {
+      $set: { recentProject: recentProjectId },
+    },
+    { new: true }
+  );
+
+  return recentProject;
+};
+
+export default { findUser, readUsers, readProjects, updateRecentProject };
