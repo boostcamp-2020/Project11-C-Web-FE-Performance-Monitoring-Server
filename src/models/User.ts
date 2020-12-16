@@ -38,8 +38,8 @@ export interface UserDocument extends mongoose.Document {
   imageURL: String;
   oauthId: String;
   status: Boolean;
-  projects: Array<mongoose.Schema.Types.ObjectId>;
-  recentProject: mongoose.Schema.Types.ObjectId;
+  projects: Array<mongoose.Types.ObjectId>;
+  recentProject: mongoose.Types.ObjectId;
 }
 
 const User: mongoose.Model<UserDocument> = mongoose.model('User', userSchema);

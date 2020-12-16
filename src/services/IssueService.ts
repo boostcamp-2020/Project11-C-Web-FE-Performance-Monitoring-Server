@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import * as mongoose from 'mongoose';
 import Issue, { IssueDocument, IssueResolveStateInfo } from '../models/Issue';
 import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
 import Project, { ProjectDocument } from '../models/Project';
+import AlertService from '../services/AlertService';
 
 // 기존 issue가 없을 경우 새로 만들어낸다
 export const createIssue = async (errorEvent: ErrorEventDocument) => {
@@ -20,10 +22,12 @@ export const createIssue = async (errorEvent: ErrorEventDocument) => {
   });
 
   const result: IssueDocument = await newIssue.save();
-
+  // eslint-disable-next-line no-param-reassign
   errorEvent.issueId = result._id;
-
   await errorEvent.save();
+
+  // 새로운 issue 생성되었으므로 자동으로 새  Aelrt를 추가하고 메일 보내는 로직 동작
+  await AlertService.addNewAlertEvent(null, result);
 
   return result;
 };
@@ -36,10 +40,12 @@ export const appendErrorEventToIssue = async (
     // eslint-disable-next-line no-underscore-dangle
     {
       $push: { errorEvents: errorEvent._id },
+      $set: { resolved: false },
     },
     { new: true }
   );
 
+  // eslint-disable-next-line no-param-reassign
   errorEvent.issueId = res._id;
   await errorEvent.save();
   return res;
@@ -50,34 +56,25 @@ export const getIssue = async (issueId: String) => {
   const res = await issueDoc.populate('projectId').execPopulate();
   return res;
 };
-// 잘못 구현된 함수, 재구현 예정
-/*
+
 export const getIssueListWithPagination = async (
-  pageOptions: {
-    page: number;
-    limit: number;
-  },
-  conditionQuery: {
+  queryCond: {
     asignee: string;
     resolved: boolean;
+    projectId: mongoose.Types.ObjectId;
   },
-  orderQuery: any
+  options: mongoose.PaginateOptions
 ) => {
-  const issueDocList: IssueDocument[] = await Issue.find(conditionQuery)
-    .sort(orderQuery)
-    .skip((pageOptions.page - 1) * pageOptions.limit)
-    .limit(pageOptions.limit)
-    //.populate({ path: 'projectId' })
-    .exec();
-
-  const pageinfo = {
-    pageNum: Math.ceil(issueDocList.length / pageOptions.limit),
-    totalItemNum: issueDocList.length,
-  };
-
-  return { issueDocList, pageinfo };
+  const query = Issue.aggregate([
+    {
+      $match: queryCond,
+    },
+  ]).addFields({
+    errorcnt: { $size: '$errorEvents' },
+  });
+  const result = await Issue.aggregatePaginate(query, options);
+  return result;
 };
-*/
 
 export const getAllIssue = async () => {
   const res: IssueDocument[] = await Issue.find({}).exec();

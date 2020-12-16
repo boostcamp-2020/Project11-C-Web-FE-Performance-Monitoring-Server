@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
-import { ErrorEventSchema, ErrorEventDocument } from './ErrorEvent';
 import { CommentSchema, CommentDocument } from './Comment';
+// import * as mongoosePaginate from 'mongoose-paginate-v2';
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate-v2');
 
 const IssueSchema: mongoose.Schema = new mongoose.Schema(
   {
@@ -25,6 +26,7 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
     },
     groupHash: {
       type: String,
+      index: true,
     },
     errorEvents: [
       {
@@ -42,7 +44,7 @@ const IssueSchema: mongoose.Schema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+IssueSchema.index({ createdAt: -1 });
 export interface IssueDocument extends mongoose.Document {
   name: String;
   message: String;
@@ -52,12 +54,15 @@ export interface IssueDocument extends mongoose.Document {
   errorEvents: mongoose.Types.ObjectId[];
   projectId: mongoose.Types.ObjectId;
   resolved: Boolean;
+  createdAt: Date;
 }
 export interface IssueResolveStateInfo {
   issueIdList: mongoose.Types.ObjectId[];
   resolved: Boolean;
 }
-const Issue: mongoose.Model<IssueDocument> = mongoose.model(
+
+IssueSchema.plugin(mongooseAggregatePaginate);
+const Issue: mongoose.AggregatePaginateModel<IssueDocument> = mongoose.model(
   'Issue',
   IssueSchema
 );

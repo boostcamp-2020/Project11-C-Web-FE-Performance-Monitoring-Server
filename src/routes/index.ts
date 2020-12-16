@@ -5,6 +5,7 @@ import errorEventRouter from './Error';
 import issueRouter from './Issue';
 import projectRouter from './ProjectRoute';
 import userRouter from './UserRoute';
+import alertRouter from './Alert';
 
 const router: express.Router = express();
 router.use('/oauth', loginRouter);
@@ -25,6 +26,11 @@ router.use(
   '/user',
   passport.authenticate('jwt', { session: false }),
   userRouter
+);
+router.use(
+  '/alert',
+  passport.authenticate('jwt', { session: false }),
+  alertRouter
 );
 
 router.get('/', (req: express.Request, res: express.Response) => {

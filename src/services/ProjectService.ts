@@ -59,6 +59,19 @@ const readProjectWithPopulate = async (user: any, projectId: string) => {
   return 'no permission';
 };
 
+// 특정 프로젝트의 구성인원 모두에 대한 정보를 반환
+const getProjectMemberList = async (projectId: string) => {
+  const projectDocument = await Project.findOne({
+    _id: projectId,
+  })
+    .populate('members')
+    .exec();
+
+  const { members } = projectDocument;
+  const projectMemberList = [...members];
+  return projectMemberList;
+};
+
 const removeProject = async (user: any, projectId: string) => {
   const deletedProject: ProjectDocument = await Project.findOneAndDelete({
     _id: projectId,
@@ -138,4 +151,5 @@ export default {
   removeProject,
   pushMember,
   removeMember,
+  getProjectMemberList,
 };
