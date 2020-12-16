@@ -85,8 +85,6 @@ const listProjectIssues = async (
     projectObjId
   );
 
-  await UserService.updateRecentProject(req.user, projectObjId);
-
   res.json(issuelist);
 };
 
