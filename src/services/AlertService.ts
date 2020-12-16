@@ -112,6 +112,10 @@ const getAlertList = async (user: any) => {
       model: 'Project',
       select: '_id title',
     })
+    .populate({
+      path: 'from',
+      model: 'User',
+    })
     .exec();
 
   return res;
