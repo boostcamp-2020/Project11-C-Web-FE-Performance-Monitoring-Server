@@ -42,11 +42,7 @@ router.get(
   '/isLogin',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    try {
-      res.status(200).json({ success: 200, userInfo: req.user });
-    } catch (error) {
-      throw error;
-    }
+    res.status(200).json({ success: 200, userInfo: req.user });
   }
 );
 
