@@ -3,8 +3,8 @@ import * as passport from 'passport';
 import loginRouter from './auth/Login';
 import errorEventRouter from './Error';
 import issueRouter from './Issue';
-import projectRouter from './ProjectRoute';
-import userRouter from './UserRoute';
+import projectRouter from './Project';
+import userRouter from './User';
 import alertRouter from './Alert';
 
 const router: express.Router = express();
