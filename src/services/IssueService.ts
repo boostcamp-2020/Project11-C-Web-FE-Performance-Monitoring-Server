@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import Issue, { IssueDocument, IssueResolveStateInfo } from '../models/Issue';
 import ErrorEvent, { ErrorEventDocument } from '../models/ErrorEvent';
 import Project, { ProjectDocument } from '../models/Project';
-import AlertService from '../services/AlertService';
+import AlertService from './AlertService';
 
 // 기존 issue가 없을 경우 새로 만들어낸다
 export const createIssue = async (errorEvent: ErrorEventDocument) => {
