@@ -1,9 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import * as mongoose from 'mongoose';
 import AlertEvent, { AlertDocument, AlertType } from '../models/Alert';
 import { IssueDocument } from '../models/Issue';
-import User from '../models/User';
+import { ProjectDocument } from '../models/Project';
+import User, { UserDocument } from '../models/User';
 import MailService from './MailService';
 import ProjectService from './ProjectService';
+import UserService from './UserService';
 
 const addNewAlertEvent = async (
   user: mongoose.Types.ObjectId | null,
@@ -52,6 +55,48 @@ const addNewAlertEvent = async (
   return res;
 };
 
+const addInviteProjectAlert = async (
+  from: mongoose.Types.ObjectId | null,
+  newMember: mongoose.Types.ObjectId,
+  project: ProjectDocument
+) => {
+  const newInviteType: AlertType = {
+    name: 'invitedProject',
+    title: '프로젝트에 초대됨',
+  };
+
+  const newAlertDoc = {
+    alertType: newInviteType,
+    // eslint-disable-next-line no-underscore-dangle
+    issue: null,
+    from,
+    project: project._id,
+  };
+
+  const inviteUserInfo = await User.findById(from);
+  const invitedUserInfo = await User.findById(newMember);
+
+  const newAlert: AlertDocument = new AlertEvent(newAlertDoc);
+  const res = await newAlert.save();
+
+  const mailTemplate = `
+  <h2> ${inviteUserInfo.name}님이 프로젝트 ${project.title}에 초대했습니다.</h2>
+
+  <a href="http://${process.env.FRONT_HOST}/projects/${
+    // eslint-disable-next-line no-underscore-dangle
+    project._id
+  }" > 프로젝트 페이지로 이동하기</a>
+  `;
+
+  MailService.sendEmail(
+    invitedUserInfo.email,
+    `@acent - ${inviteUserInfo.name}님이 프로젝트 ${project.title}에 초대했습니다.`,
+    mailTemplate
+  );
+
+  return res;
+};
+
 const getAlertList = async (user: any) => {
   const userId: mongoose.Types.ObjectId = new mongoose.Types.ObjectId(
     user.userId
@@ -72,4 +117,4 @@ const getAlertList = async (user: any) => {
   return res;
 };
 
-export default { addNewAlertEvent, getAlertList };
+export default { addNewAlertEvent, getAlertList, addInviteProjectAlert };
