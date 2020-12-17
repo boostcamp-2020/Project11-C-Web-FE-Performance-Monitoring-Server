@@ -6,7 +6,7 @@ import issueRouter from './Issue';
 import projectRouter from './Project';
 import userRouter from './User';
 import alertRouter from './Alert';
-import UserService from '../services/UserService';
+import LoginController from '../controllers/LoginController';
 
 const router: express.Router = express();
 router.use('/oauth', loginRouter);
@@ -45,5 +45,7 @@ router.get(
     res.status(200).json({ success: 200, userInfo: req.user });
   }
 );
+
+router.post('/signUp', LoginController.postSignUp);
 
 export default router;

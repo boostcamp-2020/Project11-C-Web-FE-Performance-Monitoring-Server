@@ -1,5 +1,11 @@
-import * as mongoose from 'mongoose';
-import User, { UserDocument } from '../models/User';
+import * as crypto from 'crypto';
+import User, { UserDocument, SignUpUser } from '../models/User';
+
+const hash = 'sha512';
+const encoding = 'base64';
+const hashPwd = (pwd: string): string => {
+  return crypto.createHash(hash).update(pwd).digest(encoding);
+};
 
 const saveData = async (user: any, domain: string) => {
   const { id, displayName, username, emails, photos } = user;
@@ -24,4 +30,29 @@ const saveData = async (user: any, domain: string) => {
   return [userId, userStatus, recentProject];
 };
 
-export default { saveData };
+const createUser = async (data: SignUpUser) => {
+  const { name, email, pwd } = data;
+  const imageURL =
+    'https://avatars2.githubusercontent.com/u/46434838?s=100&v=4';
+  const oauthId = 'local';
+  const status = true;
+
+  const conditions = { email, oauthId };
+  const docs = Object({
+    name,
+    pwd: hashPwd(pwd),
+    email,
+    imageURL,
+    oauthId,
+    status,
+  });
+
+  const checkUser: UserDocument[] = await User.find(conditions);
+  if (checkUser.length === 0) {
+    await User.create(docs);
+    return { isCreated: true };
+  }
+  return { isCreated: false };
+};
+
+export default { saveData, createUser };

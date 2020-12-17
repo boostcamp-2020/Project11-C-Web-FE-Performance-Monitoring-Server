@@ -88,4 +88,13 @@ const naverLogin = async (req: express.Request, res: express.Response) => {
   )(req, res);
 };
 
-export default { googleLogin, githubLogin, naverLogin };
+const postSignUp = async (req: express.Request, res: express.Response) => {
+  try {
+    const result: {} = await LoginService.createUser(req.body);
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+export default { googleLogin, githubLogin, naverLogin, postSignUp };
