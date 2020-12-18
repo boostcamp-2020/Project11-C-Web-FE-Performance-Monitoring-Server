@@ -93,12 +93,36 @@ export const hasIssue = async (errorEvent: ErrorEventDocument) => {
 };
 
 export const getIssueListByProjectId = async (
-  projectId: mongoose.Types.ObjectId
+  projectId: mongoose.Types.ObjectId,
+  selectedCase: string
 ) => {
-  const res: IssueDocument[] = await Issue.find({ projectId })
-    .populate('assignee')
-    .exec();
-  return res;
+  switch (selectedCase) {
+    case '0':
+      const resolvedIssues: IssueDocument[] = await Issue.find({
+        projectId,
+        resolved: true,
+      })
+        .populate('assignee')
+        .exec();
+      return resolvedIssues;
+    case '1':
+      const unresolvedIssues: IssueDocument[] = await Issue.find({
+        projectId,
+        resolved: false,
+      })
+        .populate('assignee')
+        .exec();
+      return unresolvedIssues;
+    case '2':
+      const allIssues: IssueDocument[] = await Issue.find({
+        projectId,
+      })
+        .populate('assignee')
+        .exec();
+      return allIssues;
+    default:
+      return null;
+  }
 };
 
 export const addIssueToProject = async (issue: IssueDocument) => {
