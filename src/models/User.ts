@@ -9,6 +9,9 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  pwd: {
+    type: String,
+  },
   imageURL: {
     type: String,
     trim: true,
@@ -35,6 +38,7 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 export interface UserDocument extends mongoose.Document {
   name: String;
   email: String;
+  pwd: String;
   imageURL: String;
   oauthId: String;
   status: Boolean;
@@ -50,6 +54,12 @@ export interface ReqUserDocument extends mongoose.Document {
   status: Boolean;
   projects: Array<mongoose.Schema.Types.ObjectId>;
   recentProject: mongoose.Schema.Types.ObjectId;
+}
+
+export interface SignUpUser {
+  name: string;
+  email: string;
+  pwd: string;
 }
 
 const User: mongoose.Model<UserDocument> = mongoose.model('User', userSchema);

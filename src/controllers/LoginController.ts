@@ -6,6 +6,10 @@ import LoginService from '../services/LoginService';
 
 dotenv.config({ path: '.env' });
 
+const createToken = data => {
+  return jwt.sign(data, process.env.JWT_SECRET);
+};
+
 const googleLogin = (req: express.Request, res: express.Response) => {
   passport.authenticate(
     'google',
@@ -17,7 +21,7 @@ const googleLogin = (req: express.Request, res: express.Response) => {
         user,
         'google'
       );
-      const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
+      const token: string = createToken({ userId });
 
       if (!userStatus) throw new Error('deleted user');
 
@@ -26,7 +30,7 @@ const googleLogin = (req: express.Request, res: express.Response) => {
         : `${process.env.ADMIN_ADDR_MAIN}`;
 
       if (token) {
-        res.cookie('jwt', token, { httpOnly: true });
+        res.cookie('jwt', token);
         return res.redirect(redirectAddr);
       }
 
@@ -46,7 +50,7 @@ const githubLogin = (req: express.Request, res: express.Response) => {
         user,
         'github'
       );
-      const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
+      const token: string = createToken({ userId });
 
       if (!userStatus) throw new Error('deleted user');
 
@@ -55,7 +59,7 @@ const githubLogin = (req: express.Request, res: express.Response) => {
         : `${process.env.ADMIN_ADDR_MAIN}`;
 
       if (token) {
-        res.cookie('jwt', token, { httpOnly: true });
+        res.cookie('jwt', token);
         return res.redirect(redirectAddr);
       }
 
@@ -88,4 +92,39 @@ const naverLogin = async (req: express.Request, res: express.Response) => {
   )(req, res);
 };
 
-export default { googleLogin, githubLogin, naverLogin };
+const postSignUp = async (req: express.Request, res: express.Response) => {
+  try {
+    const result: string | undefined = await LoginService.createUser(req.body);
+    if (result) {
+      res.cookie('jwt', createToken({ userId: result }));
+      res.json({ signUp: true });
+    } else {
+      res.json({ signUp: false });
+    }
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+const postSignIn = (req: express.Request, res: express.Response) => {
+  passport.authenticate('local', { session: false }, (err, user, info) => {
+    if (!user) return res.json(info);
+    if (!user.status) throw new Error('deleted user');
+
+    res.cookie('jwt', createToken({ userId: user._id }));
+    res.json({ signIn: true });
+  })(req, res);
+};
+
+const getSingOut = (req: express.Request, res: express.Response) => {
+  res.clearCookie('jwt').end();
+};
+
+export default {
+  googleLogin,
+  githubLogin,
+  naverLogin,
+  postSignUp,
+  postSignIn,
+  getSingOut,
+};
