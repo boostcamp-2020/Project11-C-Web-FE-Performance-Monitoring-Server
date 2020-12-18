@@ -6,6 +6,10 @@ import LoginService from '../services/LoginService';
 
 dotenv.config({ path: '.env' });
 
+const createToken = data => {
+  return jwt.sign(data, process.env.JWT_SECRET);
+};
+
 const googleLogin = (req: express.Request, res: express.Response) => {
   passport.authenticate(
     'google',
@@ -17,7 +21,7 @@ const googleLogin = (req: express.Request, res: express.Response) => {
         user,
         'google'
       );
-      const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
+      const token: string = createToken({ userId });
 
       if (!userStatus) throw new Error('deleted user');
 
@@ -46,7 +50,7 @@ const githubLogin = (req: express.Request, res: express.Response) => {
         user,
         'github'
       );
-      const token: string = jwt.sign({ userId }, process.env.JWT_SECRET);
+      const token: string = createToken({ userId });
 
       if (!userStatus) throw new Error('deleted user');
 
@@ -90,11 +94,26 @@ const naverLogin = async (req: express.Request, res: express.Response) => {
 
 const postSignUp = async (req: express.Request, res: express.Response) => {
   try {
-    const result: {} = await LoginService.createUser(req.body);
-    res.json(result);
+    const result: string | undefined = await LoginService.createUser(req.body);
+    if (result) {
+      res.cookie('jwt', createToken({ userId: result }), { httpOnly: true });
+      res.json({ signUp: true });
+    } else {
+      res.json({ signUp: false });
+    }
   } catch (err) {
     res.json(err);
   }
 };
 
-export default { googleLogin, githubLogin, naverLogin, postSignUp };
+const postSignIn = (req: express.Request, res: express.Response) => {
+  passport.authenticate('local', { session: false }, (err, user, info) => {
+    if (!user) return res.json(info);
+    if (!user.status) throw new Error('deleted user');
+
+    res.cookie('jwt', createToken({ userId: user._id }), { httpOnly: true });
+    res.json({ signIn: true });
+  })(req, res);
+};
+
+export default { googleLogin, githubLogin, naverLogin, postSignUp, postSignIn };

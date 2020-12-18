@@ -47,5 +47,6 @@ router.get(
 );
 
 router.post('/signUp', LoginController.postSignUp);
+router.post('/signIn', LoginController.postSignIn);
 
 export default router;

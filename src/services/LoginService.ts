@@ -1,11 +1,5 @@
-import * as crypto from 'crypto';
 import User, { UserDocument, SignUpUser } from '../models/User';
-
-const hash = 'sha512';
-const encoding = 'base64';
-const hashPwd = (pwd: string): string => {
-  return crypto.createHash(hash).update(pwd).digest(encoding);
-};
+import Encryption from '../utils/Encryption';
 
 const saveData = async (user: any, domain: string) => {
   const { id, displayName, username, emails, photos } = user;
@@ -40,7 +34,7 @@ const createUser = async (data: SignUpUser) => {
   const conditions = { email, oauthId };
   const docs = Object({
     name,
-    pwd: hashPwd(pwd),
+    pwd: Encryption.hashPwd(pwd),
     email,
     imageURL,
     oauthId,
@@ -49,10 +43,10 @@ const createUser = async (data: SignUpUser) => {
 
   const checkUser: UserDocument[] = await User.find(conditions);
   if (checkUser.length === 0) {
-    await User.create(docs);
-    return { isCreated: true };
+    const { _id } = await User.create(docs);
+    return _id;
   }
-  return { isCreated: false };
+  return undefined;
 };
 
 export default { saveData, createUser };
