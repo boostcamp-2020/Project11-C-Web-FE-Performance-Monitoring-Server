@@ -103,6 +103,11 @@ export const getIssueListByProjectId = async (
         resolved: true,
       })
         .populate('assignee')
+        .populate({
+          path: 'projectId',
+          model: 'Project',
+          populate: { path: 'members', model: 'User' },
+        })
         .exec();
       return resolvedIssues;
     case '1':
@@ -111,13 +116,24 @@ export const getIssueListByProjectId = async (
         resolved: false,
       })
         .populate('assignee')
+        .populate({
+          path: 'projectId',
+          model: 'Project',
+          populate: { path: 'members', model: 'User' },
+        })
         .exec();
+      console.log(unresolvedIssues[0]);
       return unresolvedIssues;
     case '2':
       const allIssues: IssueDocument[] = await Issue.find({
         projectId,
       })
         .populate('assignee')
+        .populate({
+          path: 'projectId',
+          model: 'Project',
+          populate: { path: 'members', model: 'User' },
+        })
         .exec();
       return allIssues;
     default:
