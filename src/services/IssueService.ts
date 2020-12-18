@@ -54,8 +54,11 @@ export const appendErrorEventToIssue = async (
 export const getIssue = async (issueId: String) => {
   const issueDoc: IssueDocument = await Issue.findById(issueId).exec();
   const res = await issueDoc
-    .populate('projectId')
     .populate('assignee')
+    .populate({
+      path: 'projectId',
+      populate: { path: 'members', select: 'name' },
+    })
     .execPopulate();
   return res;
 };
@@ -96,28 +99,37 @@ export const getIssueListByProjectId = async (
   projectId: mongoose.Types.ObjectId,
   selectedCase: string
 ) => {
+  const getIssues = async (resolvedState: boolean) => {
+    const issues: IssueDocument[] = await Issue.find({
+      projectId,
+      resolved: resolvedState,
+    })
+      .populate('assignee', 'name')
+      .populate('errorEvents', 'date')
+      .populate({
+        path: 'projectId',
+        populate: { path: 'members', select: 'name' },
+      })
+      .exec();
+
+    return issues;
+  };
   switch (selectedCase) {
     case '0':
-      const resolvedIssues: IssueDocument[] = await Issue.find({
-        projectId,
-        resolved: true,
-      })
-        .populate('assignee')
-        .exec();
-      return resolvedIssues;
+      return getIssues(true);
     case '1':
-      const unresolvedIssues: IssueDocument[] = await Issue.find({
-        projectId,
-        resolved: false,
-      })
-        .populate('assignee')
-        .exec();
-      return unresolvedIssues;
+      // const issues = getIssues(false);
+      return getIssues(false);
     case '2':
       const allIssues: IssueDocument[] = await Issue.find({
         projectId,
       })
-        .populate('assignee')
+        .populate('assignee', 'name')
+        .populate('errorEvents', 'date')
+        .populate({
+          path: 'projectId',
+          populate: { path: 'members', select: 'name' },
+        })
         .exec();
       return allIssues;
     default:
