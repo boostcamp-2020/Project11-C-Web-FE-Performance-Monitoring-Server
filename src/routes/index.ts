@@ -48,5 +48,6 @@ router.get(
 
 router.post('/signUp', LoginController.postSignUp);
 router.post('/signIn', LoginController.postSignIn);
+router.get('/signOut', LoginController.getSingOut);
 
 export default router;

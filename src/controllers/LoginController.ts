@@ -30,7 +30,7 @@ const googleLogin = (req: express.Request, res: express.Response) => {
         : `${process.env.ADMIN_ADDR_MAIN}`;
 
       if (token) {
-        res.cookie('jwt', token, { httpOnly: true });
+        res.cookie('jwt', token);
         return res.redirect(redirectAddr);
       }
 
@@ -59,7 +59,7 @@ const githubLogin = (req: express.Request, res: express.Response) => {
         : `${process.env.ADMIN_ADDR_MAIN}`;
 
       if (token) {
-        res.cookie('jwt', token, { httpOnly: true });
+        res.cookie('jwt', token);
         return res.redirect(redirectAddr);
       }
 
@@ -96,7 +96,7 @@ const postSignUp = async (req: express.Request, res: express.Response) => {
   try {
     const result: string | undefined = await LoginService.createUser(req.body);
     if (result) {
-      res.cookie('jwt', createToken({ userId: result }), { httpOnly: true });
+      res.cookie('jwt', createToken({ userId: result }));
       res.json({ signUp: true });
     } else {
       res.json({ signUp: false });
@@ -111,9 +111,20 @@ const postSignIn = (req: express.Request, res: express.Response) => {
     if (!user) return res.json(info);
     if (!user.status) throw new Error('deleted user');
 
-    res.cookie('jwt', createToken({ userId: user._id }), { httpOnly: true });
+    res.cookie('jwt', createToken({ userId: user._id }));
     res.json({ signIn: true });
   })(req, res);
 };
 
-export default { googleLogin, githubLogin, naverLogin, postSignUp, postSignIn };
+const getSingOut = (req: express.Request, res: express.Response) => {
+  res.clearCookie('jwt').end();
+};
+
+export default {
+  googleLogin,
+  githubLogin,
+  naverLogin,
+  postSignUp,
+  postSignIn,
+  getSingOut,
+};
