@@ -1,4 +1,4 @@
-version: '3' # 파일 규격 버전
+version: '3.5' # 파일 규격 버전
 services: # 이 항목 밑에 실행하려는 컨테이너 들을 정의
   # Use root/example as user/password credentials
   mongo:
@@ -9,14 +9,57 @@ services: # 이 항목 밑에 실행하려는 컨테이너 들을 정의
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PW}
     ports:
       - 27017:27017
+    expose:
+      - 27017
     volumes:
       - ./data/db:/data/db
+    networks:
+      - backend
 
-  mongo-express:
-    image: mongo-express
+  nginx-react:
+    container_name: nginx-react
+    image: nginx-react
     restart: always
+    build: ../../Project11-C-Web-FE-Performance-Monitoring-Admin
     ports:
-      - 8081:8081
+      - '80:80'
+    networks:
+      - backend
+
+  pm2-express-1:
+    container_name: pm2-express-1
+    image: pm2-express
+    restart: always
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - backend
+    depends_on:
+      - mongo
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PW}
+      - WAIT_HOSTS=mongo:27017
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=15
+      - WAIT_HOST_CONNECT_TIMEOUT=15
+
+  pm2-express-2:
+    container_name: pm2-express-2
+    restart: always
+    image: pm2-express
+    ports:
+      - 3001:3000
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    environment:
+      - WAIT_HOSTS=mongo:27017
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=15
+      - WAIT_HOST_CONNECT_TIMEOUT=15
+networks:
+  backend:
+    driver: bridge
