@@ -69,7 +69,7 @@ const listProjectIssues = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const { projectId } = req.params;
+  const { projectId, selectedCase } = req.params;
   const { userId } = req.user as any;
 
   let projectObjId =
@@ -82,9 +82,9 @@ const listProjectIssues = async (
   }
 
   const issuelist: IssueDocument[] = await issueService.getIssueListByProjectId(
-    projectObjId
+    projectObjId,
+    selectedCase
   );
-
   await UserService.updateRecentProject(req.user, projectObjId);
 
   res.json(issuelist);
