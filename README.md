@@ -149,6 +149,8 @@
 - Naver Cloud Platform 서버에 배포하여 운영중
 - 자세한 사항은 아래 wiki를 참조 ▼
   - [프로젝트 구조](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%A1%B0)
+### 흐름
+![flow](https://user-images.githubusercontent.com/22471977/102718878-fe104300-432d-11eb-8342-c7da191cc8e1.png)
 
 
 ## 개발 환경
@@ -189,6 +191,4 @@
   [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=blue)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
   [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=yellow)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 
-### 흐름
-![flow](https://user-images.githubusercontent.com/22471977/102718878-fe104300-432d-11eb-8342-c7da191cc8e1.png)
 
