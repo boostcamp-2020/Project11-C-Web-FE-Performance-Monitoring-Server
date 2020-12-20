@@ -143,14 +143,17 @@
 
 ![project structure@2x (1)](https://user-images.githubusercontent.com/22471977/102718948-6101da00-432e-11eb-8ee3-84cf402a6dc4.png)
 
+### flow chart
+![flow](https://user-images.githubusercontent.com/22471977/102718878-fe104300-432d-11eb-8342-c7da191cc8e1.png)
+
 - 프론트엔드, 백엔드, SDK 모두 타입스크립트를 도입
 - 프론트엔드와 백엔드 모두를 도커 컨테이너화하여 배포&운영
 - docker-compose로 프론트엔드,백엔드를 도커 이미지 빌드, 컨테이너 자동 실행하도록 docker-compose.yml 작성
 - Naver Cloud Platform 서버에 배포하여 운영중
 - 자세한 사항은 아래 wiki를 참조 ▼
   - [프로젝트 구조](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%A1%B0)
-### 흐름
-![flow](https://user-images.githubusercontent.com/22471977/102718878-fe104300-432d-11eb-8342-c7da191cc8e1.png)
+  
+
 
 
 ## 개발 환경
@@ -162,7 +165,7 @@
 ![Express](https://img.shields.io/badge/Express-v12.18.3-red?logo=Express)
 ![MongoDB](https://img.shields.io/badge/MongoDB-2.1-darkgreen?logo=MongoDB)
 ![Docker](https://img.shields.io/badge/Docker-v12.18.3-blue?logo=docker)
-![Jenkins](https://img.shields.io/badge/Jenkins-v12.18.3-red?logo=Jenkins)
+
 
 ### WiKi
 
