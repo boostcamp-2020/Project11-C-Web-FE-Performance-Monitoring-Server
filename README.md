@@ -177,5 +177,5 @@ window의 정보와 navigator 모듈 등을 이용하여 에러 환경 및 정�
   [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=yellow)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 
 ### 흐름
+![flow](https://user-images.githubusercontent.com/22471977/102718878-fe104300-432d-11eb-8342-c7da191cc8e1.png)
 
-![mermaid](https://user-images.githubusercontent.com/45379812/99759657-3a396380-2b36-11eb-86eb-506e048eb7da.png)
