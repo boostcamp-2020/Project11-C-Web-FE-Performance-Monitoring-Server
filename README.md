@@ -71,8 +71,8 @@
 ![server_stack_image](./docs/image/server_stack.png)
 
 - 에러로그 저장과 실시간 분석을 효율적으로 진행하기 위해 mongoDB를 사용하였습니다.
-- sdk로부터 수집되는 에러 이벤트 로그를 저장하고 aggregation을 통해 실시간으로 로그를 분석해 그래프를 작성해주는 api를 구현하였습니다.
-- MongoDB의 queryplanner을 활용하여 쿼리의 성능을 분석하고 결과를 바탕으로 인덱싱을 적용하여 MongoDB 쿼리 성능을 향상시켰습니다.
+- sdk로부터 수집되는 에러 이벤트 로그를 저장하고 aggregation을 통한 실시간 로그 분석한 결과를 그래프 데이터로 반환하는 api를 구현하였습니다.
+- MongoDB의 queryplanner을 활용하여 쿼리의 성능을 분석한 결과를 바탕으로 인덱싱을 적용하여 MongoDB 쿼리 성능을 향상시켰습니다.
 - Mongoose ODM을 통해 model schema를 정의하여 각 collection의 document 데이터 구조의 일관성을 유지하여 schemaless DB로서의 단점을 보완하였습니다.
 
 ---
