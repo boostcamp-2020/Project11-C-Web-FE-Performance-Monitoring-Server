@@ -53,6 +53,7 @@
     "passport-github": "^1.1.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "passport-naver": "^1.0.6",
     "url": "^0.11.0"
   }

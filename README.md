@@ -71,8 +71,8 @@
 ![server_stack_image](./docs/image/server_stack.png)
 
 - 에러로그 저장과 실시간 분석을 효율적으로 진행하기 위해 mongoDB를 사용하였습니다.
-- sdk로부터 수집되는 에러 이벤트 로그를 저장하고 aggregation을 통해 실시간으로 로그를 분석해 그래프를 작성해주는 api를 구현하였습니다.
-- MongoDB의 queryplanner을 활용하여 쿼리의 성능을 분석하고 결과를 바탕으로 인덱싱을 적용하여 MongoDB 쿼리 성능을 향상시켰습니다.
+- sdk로부터 수집되는 에러 이벤트 로그를 저장하고 aggregation을 통한 실시간 로그 분석한 결과를 그래프 데이터로 반환하는 api를 구현하였습니다.
+- MongoDB의 queryplanner을 활용하여 쿼리의 성능을 분석한 결과를 바탕으로 인덱싱을 적용하여 MongoDB 쿼리 성능을 향상시켰습니다.
 - Mongoose ODM을 통해 model schema를 정의하여 각 collection의 document 데이터 구조의 일관성을 유지하여 schemaless DB로서의 단점을 보완하였습니다.
 
 ---
@@ -130,31 +130,31 @@
 
 ## SDK
 
----
+- Node, Broswer 환경 모두에서 에러를 수집할 수 있습니다.
+- 공통 기능을 담당하는 **@acent/core**와 각 플랫폼을 담당하는 **@acent/node**, **@acent/browser** 등을 분리하여 이용자가 효율적으로 사용할 수 있습니다.
+- process 객체를 이용하여 에러를 수집합니다.
+- process의 정보와 os 모듈, 요청 등을 이용하여 에러 환경 및 정보를 수집합니다.
+- window 객체를 이용하여 에러를 수집합니다.
+- window의 정보와 navigator 모듈 등을 이용하여 에러 환경 및 정보를 수집합니다.
+- 사용자가 커스텀으로 처리하는 에러를 수집할 수 있도록 기능을 제공합니다.
+- 프로미스 에러 또한 수집합니다.
 
-공통 기능을 담당하는 **@acent/core**와 각 플랫폼을 담당하는 **@acent/node**,
+## 프로젝트 구조
 
-**@acent/browser** 등을 분리하여 이용자가 효율적으로 사용할 수 있습니다.
+![project structure@2x (1)](https://user-images.githubusercontent.com/22471977/102718948-6101da00-432e-11eb-8ee3-84cf402a6dc4.png)
 
----
+### flow chart
+![flow](https://user-images.githubusercontent.com/22471977/102718878-fe104300-432d-11eb-8342-c7da191cc8e1.png)
 
-process 객체를 이용하여 에러를 수집합니다.
+- 프론트엔드, 백엔드, SDK 모두 타입스크립트를 도입
+- 프론트엔드와 백엔드 모두를 도커 컨테이너화하여 배포&운영
+- docker-compose로 프론트엔드,백엔드를 도커 이미지 빌드, 컨테이너 자동 실행하도록 docker-compose.yml 작성
+- Naver Cloud Platform 서버에 배포하여 운영중
+- 자세한 사항은 아래 wiki를 참조 ▼
+  - [프로젝트 구조](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%A1%B0)
+  
 
-process의 정보와 os 모듈, 요청 등을 이용하여 에러 환경 및 정보를 수집합니다.
 
----
-
-window 객체를 이용하여 에러를 수집합니다.
-
-window의 정보와 navigator 모듈 등을 이용하여 에러 환경 및 정보를 수집합니다.
-
----
-
-사용자가 커스텀으로 처리하는 에러를 수집할 수 있도록 기능을 제공합니다.
-
-프로미스 에러 또한 수집합니다.
-
----
 
 ## 프로젝트 구조
 
@@ -205,6 +205,4 @@ window의 정보와 navigator 모듈 등을 이용하여 에러 환경 및 정�
   [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=blue)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
   [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=yellow)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
 
-### 흐름
 
-![mermaid](https://user-images.githubusercontent.com/45379812/99759657-3a396380-2b36-11eb-86eb-506e048eb7da.png)

@@ -14,7 +14,10 @@ router.post('/comment', CommentController.addComment);
 router.put('/comment', CommentController.editComment);
 router.delete('/:issueId/comment/:commentId', CommentController.deleteComment);
 
-router.get('/project/:projectId', IssueController.listProjectIssues);
+router.get(
+  '/project/:projectId/:selectedCase',
+  IssueController.listProjectIssues
+);
 router.get(
   '/v2/project/:projectId',
   IssueController.getProjectIssuesWitPagination
