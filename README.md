@@ -94,23 +94,6 @@
 
 - ## [Server](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
 
-  [![GitHub Open Issues](https://img.shields.io/github/issues-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=green)](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
-  [![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-  [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=blue)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-  [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server?color=yellow)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-
 - ## [Admin](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin) : 에러를 볼 수 있는 Front Page
 
-  [![GitHub Open Issues](https://img.shields.io/github/issues-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=green)](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
-  [![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-  [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=blue)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-  [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Admin?color=yellow)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-
 - ## [SDK](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK)
-
-  [![GitHub Open Issues](https://img.shields.io/github/issues-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=green)](https://github.com/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-Server)
-  [![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=red)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-  [![GitHub Open PR](https://img.shields.io/github/issues-pr-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=blue)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-  [![GitHub Closed PR](https://img.shields.io/github/issues-pr-closed-raw/boostcamp-2020/Project11-C-Web-FE-Performance-Monitoring-SDK?color=yellow)](https://github.com/boostcamp-2020/IssueTracker-2/issues)
-
-
